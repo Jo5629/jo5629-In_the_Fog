@@ -49,18 +49,18 @@ local def = {
 			pos = player:get_pos()
 		end
 
-		if self.despawn_timer >= 15 then
+		if self.despawn_timer >= herobrine.settings.despawn_timer then
 			object:set_hp(0)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
 			return false
 		end
-		if self.despawn_timer >= 10 and not self:line_of_sight(obj_pos, pos) then
+		if self.despawn_timer >= (0.75 * herobrine.settings.despawn_timer) and not self:line_of_sight(obj_pos, pos) then
 			object:set_hp(0)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to being out of sight.")
 			return false
 		end
 
-		local objects = minetest.get_objects_inside_radius(obj_pos, 15)
+		local objects = minetest.get_objects_inside_radius(obj_pos, herobrine.settings.despawn_radius)
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
 				object:set_hp(0)

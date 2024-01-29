@@ -27,6 +27,7 @@ function herobrine.stalk_player(pname, pos)
     obj:yaw_to_pos(minetest.get_player_by_name(pname):get_pos(), 0)
     obj.facing_pname = pname
     minetest.sound_play({name = "herobrine_stalking"}, {to_player = pname}, true)
+    minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. pname .. ".")
 end
 
 local max_time = herobrine.settings.stalking_timer or 120
@@ -39,6 +40,5 @@ minetest.register_globalstep(function(dtime)
         local name = player:get_player_name()
         local pos = herobrine.find_position_near(player:get_pos())
         herobrine.stalk_player(name, pos)
-        minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. name .. ".")
     end
 end)

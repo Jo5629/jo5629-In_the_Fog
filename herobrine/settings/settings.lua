@@ -2,15 +2,16 @@
 herobrine.settings = {}
 
 function herobrine.save_settings()
-    local settings = Settings(minetest.get_worldpath() .. "/herobrine_settings.conf")
+    local file = Settings(minetest.get_worldpath() .. "/herobrine_settings.conf")
     for k, v in pairs(herobrine.settings) do
         if type(v) == "table" then
-            settings:set(k, minetest.serialize(v))
+            file:set(k, minetest.serialize(v))
         else
-            settings:set(k, v)
+            file:set(k, v)
         end
     end
-    settings:write()
+    local success = file:write()
+    return success
 end
 
 function herobrine.get_settings()
