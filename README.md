@@ -1,4 +1,4 @@
-# In The Fog
+# In the Fog
 
 **NOTICE: This is a WIP mod. Bugs and crashes are expected and the repository might not be updated right away.**
 
