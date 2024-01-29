@@ -39,6 +39,6 @@ minetest.register_globalstep(function(dtime)
         local name = player:get_player_name()
         local pos = herobrine.find_position_near(player:get_pos())
         herobrine.stalk_player(name, pos)
-        minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.string_to_pos(pos, 1) .. " stalking " .. name .. ".")
+        minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. name .. ".")
     end
 end)
