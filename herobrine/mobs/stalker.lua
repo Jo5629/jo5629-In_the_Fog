@@ -3,7 +3,7 @@ local def = {
     visual = "mesh",
     mesh = "herobrine.b3d",
     textures = {"herobrine.png"},
-    type = "monster",
+    type = "npc", --> Somehow an npc-type mob will not despawn but a monster-type will???.
     passive = false,
     attack_type = "dogfight",
     hp_min = 300,
@@ -32,9 +32,10 @@ local def = {
 		self:yaw_to_pos(pos, 0)
 	end,
 	do_punch = function (self)
-		self.object:set_hp(0)
+		mobs:remove(self)
 	end,
     do_custom = function(self, dtime)
+		self.owner = nil
 		local object = self.object
 		local obj_pos = object:get_pos()
 
@@ -50,12 +51,12 @@ local def = {
 		end
 
 		if self.despawn_timer >= herobrine.settings.despawn_timer then
-			object:set_hp(0)
+			mobs:remove(self)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
 			return false
 		end
 		if self.despawn_timer >= (0.75 * herobrine.settings.despawn_timer) and not self:line_of_sight(obj_pos, pos) then
-			object:set_hp(0)
+			mobs:remove(self)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to being out of sight.")
 			return false
 		end
@@ -63,7 +64,7 @@ local def = {
 		local objects = minetest.get_objects_inside_radius(obj_pos, herobrine.settings.despawn_radius)
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
-				object:set_hp(0)
+				mobs:remove(self)
 				minetest.log("action", "[In the Fog] Herobrine despawned due to a player being within 15 blocks of it.")
 				return false
 			end
