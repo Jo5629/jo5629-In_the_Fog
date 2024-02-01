@@ -5,3 +5,5 @@ herobrine.settings.spawnable_on = {"group:soil", "group:stone", "group:sand", "g
 
 herobrine.settings.despawn_timer = 20
 herobrine.settings.despawn_radius = 15
+
+herobrine.settings.object_radius = 20

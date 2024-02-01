@@ -17,7 +17,7 @@ local function hud_waypoint_def(pos)
 end
 
 cmd:sub("stalk_player :waypoint", {
-    function(name, waypoint)
+    func = function(name, waypoint)
         local player = minetest.get_player_by_name(name)
         if player then
             local pos = herobrine.find_position_near(player:get_pos())
@@ -38,7 +38,7 @@ cmd:sub("stalk_player :waypoint", {
 })
 
 cmd:sub("stalk_player :target :waypoint", {
-    function(name, target, waypoint)
+    func = function(name, target, waypoint)
         local player = minetest.get_player_by_name(target)
         if player then
             local pos = herobrine.find_position_near(player:get_pos())
@@ -60,7 +60,7 @@ cmd:sub("stalk_player :target :waypoint", {
 
 cmd:sub("save_settings", {
     privs = {server = true},
-    function(name)
+    func = function(name)
         local status = herobrine.save_settings()
         if status then
             minetest.chat_send_player(name, "Able to save to config file.")

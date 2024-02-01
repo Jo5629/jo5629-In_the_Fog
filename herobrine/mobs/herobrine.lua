@@ -35,7 +35,16 @@ local def = {
 	},
 
 	do_custom = function(self, dtime)
+		local object = self.object
 		self.owner = nil
+		local objs = minetest.get_objects_inside_radius(object:get_pos(), herobrine.settings.object_radius)
+		table.shuffle(objs, 1, #objs)
+		for _, obj in pairs(objs) do
+			if obj:is_player() then
+				self:do_attack(obj)
+				break
+			end
+		end
 	end,
 }
 

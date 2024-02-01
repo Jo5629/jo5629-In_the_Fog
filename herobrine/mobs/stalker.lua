@@ -40,6 +40,7 @@ local def = {
 		local obj_pos = object:get_pos()
 
 	    self.despawn_timer = self.despawn_timer + dtime
+		local despawn_radius = herobrine.settings.despawn_radius
 
 		local pos = {}
 		if self.facing_pname == nil then
@@ -61,11 +62,11 @@ local def = {
 			return false
 		end
 
-		local objects = minetest.get_objects_inside_radius(obj_pos, herobrine.settings.despawn_radius)
+		local objects = minetest.get_objects_inside_radius(obj_pos, despawn_radius)
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
 				mobs:remove(self)
-				minetest.log("action", "[In the Fog] Herobrine despawned due to a player being within 15 blocks of it.")
+				minetest.log("action", string.format("[In the Fog] Herobrine despawned due to a player being within %d blocks of it.", despawn_radius))
 				return false
 			end
 		end

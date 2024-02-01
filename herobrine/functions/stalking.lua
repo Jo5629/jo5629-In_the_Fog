@@ -30,7 +30,7 @@ function herobrine.stalk_player(pname, pos)
     minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. pname .. ".")
 end
 
-local max_time = herobrine.settings.stalking_timer or 120
+local max_time = herobrine.settings.stalking_timer
 local timer = 0
 minetest.register_globalstep(function(dtime)
     timer = timer + dtime
@@ -40,5 +40,6 @@ minetest.register_globalstep(function(dtime)
         local name = player:get_player_name()
         local pos = herobrine.find_position_near(player:get_pos())
         herobrine.stalk_player(name, pos)
+        timer = 0
     end
 end)
