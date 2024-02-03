@@ -61,7 +61,7 @@ cmd:sub("stalk_player :target :waypoint", {
 cmd:sub("save_settings", {
     privs = {server = true},
     func = function(name)
-        local status = herobrine.save_settings()
+        local status = herobrine_settings.save_settings()
         if status then
             minetest.chat_send_player(name, "Able to save to config file.")
         else

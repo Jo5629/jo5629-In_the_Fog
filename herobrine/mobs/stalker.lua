@@ -40,7 +40,7 @@ local def = {
 		local obj_pos = object:get_pos()
 
 	    self.despawn_timer = self.despawn_timer + dtime
-		local despawn_radius = herobrine.settings.despawn_radius
+		local despawn_radius = herobrine_settings.settings.despawn_radius
 
 		local pos = {}
 		if self.facing_pname == nil then
@@ -51,12 +51,12 @@ local def = {
 			pos = player:get_pos()
 		end
 
-		if self.despawn_timer >= herobrine.settings.despawn_timer then
+		if self.despawn_timer >= herobrine_settings.settings.despawn_timer then
 			mobs:remove(self)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
 			return false
 		end
-		if self.despawn_timer >= (0.75 * herobrine.settings.despawn_timer) and not self:line_of_sight(obj_pos, pos) then
+		if self.despawn_timer >= (0.75 * herobrine_settings.settings.despawn_timer) and not self:line_of_sight(obj_pos, pos) then
 			mobs:remove(self)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to being out of sight.")
 			return false
