@@ -9,5 +9,5 @@ Inspired from: [From the Fog Github](https://github.com/LunarEclipseStudios/From
 
 ## Credits
 Wherever not stated: 
-- Code: LGPLv3.0 only
-- Textures: CC-BY-SA 3.0
+- Code: LGPLv2.1 only
+- Textures: CC-BY-SA 4.0
