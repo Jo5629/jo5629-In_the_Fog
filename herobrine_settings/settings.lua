@@ -1,8 +1,4 @@
 --> Save the settings on a world-to-world basis.
-herobrine_settings = {
-    settings = {},
-    settings_list = {}
-}
 
 function herobrine_settings.register_setting(name, def)
     herobrine_settings.settings[name] = def.initial_value
