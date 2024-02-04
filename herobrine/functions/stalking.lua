@@ -33,6 +33,11 @@ end
 local max_time = herobrine_settings.settings.stalking_timer
 local timer = 0
 minetest.register_globalstep(function(dtime)
+    if minetest.get_day_count() < herobrine_settings.settings.stalking_days then
+        timer = 0
+        return
+    end
+
     timer = timer + dtime
     if timer >= max_time then
         local players = minetest.get_connected_players()

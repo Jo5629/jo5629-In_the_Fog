@@ -1,13 +1,29 @@
 --> Save the settings on a world-to-world basis.
 
+--[[
+    herobrine_settings.register_setting(name, {
+        type = Could be "table", "boolean", "string", "number"
+        description = Description of the setting. Defaults to ""
+        value = Initial value to be registered.
+    })
+]]
+
 function herobrine_settings.register_setting(name, def)
-    herobrine_settings.settings[name] = def.initial_value
+    if def.type ~= type(def.value) then
+        minetest.log("error", string.format("[In the Fog] Was not able to register: %s"))
+        return
+    end
+    if def.description == nil then def.description = "" end
+
+    herobrine_settings.settings[name] = def.value
+    herobrine_settings.settings_list[name] = def
+    minetest.log("action", string.format("[In the Fog] Registered setting: %s", name))
 end
 
 function herobrine_settings.save_settings()
     local file = Settings(minetest.get_worldpath() .. "/herobrine_settings.conf")
     for k, v in pairs(herobrine_settings.settings) do
-        local setting_type = type(v)
+        local setting_type = herobrine_settings.settings_list[k].type
         if setting_type == "table" then
             file:set(k, minetest.serialize(v))
         elseif setting_type == "string" or setting_type == "number" or setting_type == "boolean" then
@@ -35,20 +51,18 @@ function herobrine_settings.get_settings()
         end
 
         --> Actually write to the in-game settings table.
-        if tonumber(v) == nil then
-            if minetest.deserialize(v) == nil then
-                herobrine_settings.settings[k] = minetest.deserialize(v) --> Value is a table.
-                return
-            end
-            if v == "false" then
-                herobrine_settings.settings[k] = false --> Value is a false boolean.
-            elseif v == "true" then
-                herobrine_settings.settings[k] = true --> Value is a true boolean.
-            else
-                herobrine_settings.settings[k] = v --> Value is a string.
-            end
+        local type = herobrine_settings.settings_list[k].type
+        if type == "number" then
+            herobrine_settings.settings[k] = tonumber(v)
+        elseif type == "string" then
+            herobrine_settings.settings[k] = v
+        elseif type == "table" then
+            herobrine_settings.settings[k] = minetest.deserialize(v)
+        elseif type == "boolean" then
+            local booleans = {["false"] = false, ["true"] = true}
+            herobrine_settings.settings[k] = booleans[v]
         else
-            herobrine_settings.settings[k] = tonumber(v) --> Value is a number.
+            minetest.log("warning", string.format("[In the Fog] Was not able to write %s to herobrine_settings.", k))
         end
     end
 end
