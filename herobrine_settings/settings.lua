@@ -1,15 +1,8 @@
 --> Save the settings on a world-to-world basis.
 
---[[
-    herobrine_settings.register_setting(name, {
-        type = Could be "table", "boolean", "string", "number"
-        description = Description of the setting. Defaults to ""
-        value = Initial value to be registered.
-    })
-]]
-
 function herobrine_settings.register_setting(name, def)
-    if def.type ~= type(def.value) then
+    local types = {["table"] = true, ["boolean"] = true, ["string"] = true, ["number"] = true}
+    if def.type ~= type(def.value) or not types[def.type]  then
         minetest.log("error", string.format("[In the Fog] Was not able to register: %s"))
         return
     end
@@ -62,7 +55,7 @@ function herobrine_settings.get_settings()
             local booleans = {["false"] = false, ["true"] = true}
             herobrine_settings.settings[k] = booleans[v]
         else
-            minetest.log("warning", string.format("[In the Fog] Was not able to write %s to herobrine_settings.", k))
+            minetest.log("error", string.format("[In the Fog] Was not able to write %s to herobrine_settings.", k))
         end
     end
 end
