@@ -1,8 +1,34 @@
+herobrine.commands = {}
+herobrine.commands_list = {}
+
 local cmd = chatcmdbuilder.register("herobrine", {
     description = "Command used for the In the Fog mod.",
     privs = {
         interact = true
     }
+})
+
+function herobrine.register_subcommand(name, def)
+    if def.description == nil then
+        def.description = "Not defined."
+    end
+    herobrine.commands[name] = def
+    table.insert(herobrine.commands_list, name)
+    cmd:sub(name, def)
+end
+
+herobrine.register_subcommand("help", {
+    description = "Gets the help commands for the In the Fog mod.",
+    func = function(name)
+        table.sort(herobrine.commands_list, function(a, b)
+            return string.upper(a) < string.upper(b)
+        end)
+
+        minetest.chat_send_player(name, minetest.colorize("#BFFF00", "Commands for the In the Fog mod:"))
+        for _, v in pairs(herobrine.commands_list) do
+            minetest.chat_send_player(name, string.format("%s - %s", minetest.colorize("#BFFF00", v), herobrine.commands[v].description))
+        end
+    end,
 })
 
 local function hud_waypoint_def(pos)
@@ -16,7 +42,8 @@ local function hud_waypoint_def(pos)
     return def
 end
 
-cmd:sub("stalk_player :waypoint", {
+herobrine.register_subcommand("stalk_player :waypoint", {
+    description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, waypoint)
         local player = minetest.get_player_by_name(name)
         if player then
@@ -37,7 +64,9 @@ cmd:sub("stalk_player :waypoint", {
     end
 })
 
-cmd:sub("stalk_player :target :waypoint", {
+herobrine.register_subcommand("stalk_player :target :waypoint", {
+    description = "Stalks a player. If waypoint is true, wherever Herobrine is spawned at will be marked.",
+    privs = {server = true},
     func = function(name, target, waypoint)
         local player = minetest.get_player_by_name(target)
         if player then
@@ -58,7 +87,8 @@ cmd:sub("stalk_player :target :waypoint", {
     end,
 })
 
-cmd:sub("save_settings", {
+herobrine.register_subcommand("save_settings", {
+    description = "Saves the current settings to a config file.",
     privs = {server = true},
     func = function(name)
         local status = herobrine_settings.save_settings()

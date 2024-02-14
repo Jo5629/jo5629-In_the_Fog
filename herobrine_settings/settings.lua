@@ -3,20 +3,21 @@
 function herobrine_settings.register_setting(name, def)
     local types = {["table"] = true, ["boolean"] = true, ["string"] = true, ["number"] = true}
     if def.type ~= type(def.value) or not types[def.type]  then
-        minetest.log("error", string.format("[In the Fog] Was not able to register: %s"))
+        minetest.log("error", string.format("[In the Fog] Was not able to register: %s", name))
         return
     end
-    if def.description == nil then def.description = "" end
+    if def.description == nil then def.description = "Not defined." end
 
     herobrine_settings.settings[name] = def.value
-    herobrine_settings.settings_list[name] = def
+    herobrine_settings.settings_defs[name] = def
+    table.insert(herobrine_settings.settings_list, name)
     minetest.log("action", string.format("[In the Fog] Registered setting: %s", name))
 end
 
 function herobrine_settings.save_settings()
     local file = Settings(minetest.get_worldpath() .. "/herobrine_settings.conf")
     for k, v in pairs(herobrine_settings.settings) do
-        local setting_type = herobrine_settings.settings_list[k].type
+        local setting_type = herobrine_settings.settings_defs[k].type
         if setting_type == "table" then
             file:set(k, minetest.serialize(v))
         elseif setting_type == "string" or setting_type == "number" or setting_type == "boolean" then
@@ -44,7 +45,7 @@ function herobrine_settings.get_settings()
         end
 
         --> Actually write to the in-game settings table.
-        local type = herobrine_settings.settings_list[k].type
+        local type = herobrine_settings.settings_defs[k].type
         if type == "number" then
             herobrine_settings.settings[k] = tonumber(v)
         elseif type == "string" then
