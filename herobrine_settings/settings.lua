@@ -29,12 +29,24 @@ end
 
 function herobrine_settings.set_setting(name, val)
     local def = herobrine_settings.get_setting_def(name)
+    local def_type = def.type
     local min, max = def.min or 0, def.max or 65536
-    if (def.type ~= type(val)) or (def.type == "number" and not (val >= min and val <= max)) then
+    if not val then
+        minetest.log("warning", string.format("[In the Fog] Was not able to overwrite setting: %s.", name))
         return false
     end
+    if def_type == "number" and not tonumber(val) and not (tonumber(val) >= min and tonumber(val) <= max) then
+        herobrine_settings.settings[name] = tonumber(val)
+    elseif def_type == "table" then
+        if minetest.deserialize(val) ~= nil then herobrine_settings.settings[name] = minetest.deserialize(val) end
+    elseif def_type == "boolean" then
+        local booleans = {["false"] = false, ["true"] = true}
+        if booleans[val] ~= nil then herobrine_settings.settings[name] = booleans[val] end
+    elseif def_type == "string" then
+        herobrine_settings.settings[name] = val
+    end
 
-    herobrine_settings.settings[name] = val
+    minetest.log("action", string.format("[In the Fog] Was able to override setting: %s", name))
     return true
 end
 
@@ -69,20 +81,7 @@ function herobrine_settings.load_settings()
         end
 
         --> Actually write to the in-game settings table.
-        local def = herobrine_settings.get_setting_def(k)
-        local type = def.type
-        if type == "number" then
-            herobrine_settings.set_setting(k, tonumber(v))
-        elseif type == "string" then
-            herobrine_settings.set_setting(k, v)
-        elseif type == "table" then
-            herobrine_settings.set_setting(k, minetest.deserialize(v))
-        elseif type == "boolean" then
-            local booleans = {["false"] = false, ["true"] = true}
-            herobrine_settings.set_setting(k, booleans[v])
-        else
-            minetest.log("error", string.format("[In the Fog] Was not able to write %s to herobrine_settings.", k))
-        end
+        herobrine_settings.set_setting(k, v)
     end
     return true
 end

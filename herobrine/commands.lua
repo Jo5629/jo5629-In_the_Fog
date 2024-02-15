@@ -2,7 +2,7 @@ herobrine.commands = {}
 herobrine.commands_list = {}
 
 local cmd = chatcmdbuilder.register("herobrine", {
-    description = "Command used for the In the Fog mod.",
+    description = "Command used for the In the Fog mod. Do /herobrine help to get started.",
     privs = {
         interact = true
     }
@@ -13,7 +13,9 @@ function herobrine.register_subcommand(name, def)
         def.description = "Not defined."
     end
     herobrine.commands[name] = def
-    table.insert(herobrine.commands_list, name)
+    if not def.hidden then --> Not be shown during /herobrine help
+        table.insert(herobrine.commands_list, name)
+    end
     cmd:sub(name, def)
 end
 
@@ -62,6 +64,7 @@ local function stalk_player(pname, waypoint)
 end
 
 herobrine.register_subcommand("stalk_player", {
+    hidden = true,
     description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name)
         return stalk_player(name)
