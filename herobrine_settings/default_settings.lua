@@ -35,3 +35,10 @@ herobrine_settings.register_setting("stalking_days", {
     description = "How much in-game days it takes until Herobrine starts stalking players.",
     value = 3
 })
+
+herobrine_settings.register_setting("random_door_opening", {
+    type = "number",
+    description = "The chance of a door being randomly open in your world.",
+    value = 20,
+    max = 100,
+})

@@ -42,25 +42,36 @@ local function hud_waypoint_def(pos)
     return def
 end
 
+local function stalk_player(pname, waypoint)
+     local player = minetest.get_player_by_name(pname)
+    if player then
+        local pos = herobrine.find_position_near(player:get_pos())
+        herobrine.stalk_player(pname, pos)
+
+        if waypoint == "true" then
+            local id = player:hud_add(hud_waypoint_def(pos))
+            minetest.after(5, function()
+                player:hud_remove(id)
+            end)
+        end
+
+        return true, "Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1)
+    else
+        return false, "Command is unable to execute."
+    end
+end
+
+herobrine.register_subcommand("stalk_player", {
+    description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
+    func = function(name)
+        return stalk_player(name)
+    end,
+})
+
 herobrine.register_subcommand("stalk_player :waypoint", {
     description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, waypoint)
-        local player = minetest.get_player_by_name(name)
-        if player then
-            local pos = herobrine.find_position_near(player:get_pos())
-            herobrine.stalk_player(name, pos)
-
-            if waypoint == "true" then
-                local id = player:hud_add(hud_waypoint_def(pos))
-                minetest.after(5, function()
-                    player:hud_remove(id)
-                end)
-            end
-
-            return true, "Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1)
-        else
-            return false, "Command is unable to execute."
-        end
+        return stalk_player(name, waypoint)
     end
 })
 
@@ -70,17 +81,7 @@ herobrine.register_subcommand("stalk_player :target :waypoint", {
     func = function(name, target, waypoint)
         local player = minetest.get_player_by_name(target)
         if player then
-            local pos = herobrine.find_position_near(player:get_pos())
-            herobrine.stalk_player(target, pos)
-
-            if waypoint == "true" then
-                local id = player:hud_add(hud_waypoint_def(pos))
-                minetest.after(5, function()
-                    player:hud_remove(id)
-                end)
-            end
-
-            return true, "Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1)
+            return stalk_player(target, waypoint)
         else
             return false, "Unable to find " .. target .. "."
         end
