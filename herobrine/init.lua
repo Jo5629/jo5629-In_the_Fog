@@ -11,3 +11,4 @@ dofile(modpath .. "/mobs/herobrine.lua")
 
 --> Functions.
 dofile(modpath .. "/functions/stalking.lua")
+dofile(modpath .. "/functions/footsteps.lua")

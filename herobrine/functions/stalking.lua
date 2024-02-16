@@ -7,7 +7,7 @@ function herobrine.find_position_near(pos)
     local found = false
     local newpos = pos
     for _, node_pos in pairs(nodes) do
-        if vector.distance(pos, node_pos) > 15 then
+        if vector.distance(pos, node_pos) > 30 then
             newpos = node_pos
             found = true
             break
