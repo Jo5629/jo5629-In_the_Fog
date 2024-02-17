@@ -9,7 +9,3 @@ herobrine_settings = {
 dofile(modpath .. "/settings.lua")
 dofile(modpath .. "/default_settings.lua")
 herobrine_settings.load_settings()
-
-minetest.register_on_mods_loaded(function() --> Need to do something about this in the future.
-    dofile(modpath .. "/formspec.lua")
-end)
