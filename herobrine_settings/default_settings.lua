@@ -42,3 +42,22 @@ herobrine_settings.register_setting("random_door_opening", {
     value = 20,
     max = 100,
 })
+
+herobrine_settings.register_setting("game_crash", {
+    type = "boolean",
+    description = "Enable/disable Herobrine being able to crash your world.",
+    value = false,
+})
+
+herobrine_settings.register_setting("game_crash_interval", {
+    type = "number",
+    description = "How long it takes before the game can randomly crash (in seconds).",
+    value = 600,
+})
+
+herobrine_settings.register_setting("game_crash_chance", {
+    type = "number",
+    description = "The chance of Herobrine crashing your world.",
+    value = 10,
+    max = 100,
+})

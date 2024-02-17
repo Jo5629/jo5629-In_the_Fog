@@ -25,8 +25,9 @@ local my_gui = flow.make_gui(function(player, ctx)
             label = "Save Settings",
             h = 1.3,
             on_event = function(player, ctx)
-                for _, v in pairs(herobrine_settings.get_settings_list()) do
-                    herobrine_settings.set_setting(v, ctx.form[v])
+                for _, name in pairs(herobrine_settings.get_settings_list()) do
+                    local def = herobrine_settings.get_setting_def(name)
+                    herobrine_settings.set_setting(name, herobrine_settings.convert_value(ctx.form[name], def.type))
                 end
                 local success = herobrine_settings.save_settings()
                 if success then

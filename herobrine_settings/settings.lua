@@ -1,15 +1,7 @@
 --> Save the settings on a world-to-world basis.
-
-function herobrine_settings.get_setting_def(name)
-    return herobrine_settings.settings_defs[name]
-end
-
-function herobrine_settings.get_settings_list()
-    return herobrine_settings.settings_list
-end
+local types = {["table"] = true, ["boolean"] = true, ["string"] = true, ["number"] = true}
 
 function herobrine_settings.register_setting(name, def)
-    local types = {["table"] = true, ["boolean"] = true, ["string"] = true, ["number"] = true}
     if def.type ~= type(def.value) or not types[def.type]  then
         minetest.log("error", string.format("[In the Fog] Was not able to register: %s", name))
         return false
@@ -23,29 +15,39 @@ function herobrine_settings.register_setting(name, def)
     return true
 end
 
+function herobrine_settings.convert_value(val, to_type)
+    if not types[to_type] then return nil end
+    if to_type == "number" then
+       return tonumber(val)
+    elseif to_type == "table" then
+        return minetest.deserialize(val)
+    elseif to_type == "boolean" then
+        local values = {["false"] = false, ["true"] = true}
+        return values[val]
+    elseif to_type == "string" then
+        return tostring(val)
+    end
+end
+
 function herobrine_settings.get_setting(name)
     return herobrine_settings.settings[name]
 end
 
+function herobrine_settings.get_setting_def(name)
+    return herobrine_settings.settings_defs[name]
+end
+
+function herobrine_settings.get_settings_list()
+    return herobrine_settings.settings_list
+end
+
 function herobrine_settings.set_setting(name, val)
-    local def = herobrine_settings.get_setting_def(name)
-    local def_type = def.type
-    local min, max = def.min or 0, def.max or 65536
-    if not val then
+    if val == nil or herobrine_settings.get_setting_def(name).type ~= type(val) then
         minetest.log("warning", string.format("[In the Fog] Was not able to overwrite setting: %s.", name))
         return false
     end
-    if def_type == "number" and not tonumber(val) and not (tonumber(val) >= min and tonumber(val) <= max) then
-        herobrine_settings.settings[name] = tonumber(val)
-    elseif def_type == "table" then
-        if minetest.deserialize(val) ~= nil then herobrine_settings.settings[name] = minetest.deserialize(val) end
-    elseif def_type == "boolean" then
-        local booleans = {["false"] = false, ["true"] = true}
-        if booleans[val] ~= nil then herobrine_settings.settings[name] = booleans[val] end
-    elseif def_type == "string" then
-        herobrine_settings.settings[name] = val
-    end
 
+    herobrine_settings.settings[name] = val
     minetest.log("action", string.format("[In the Fog] Was able to override setting: %s", name))
     return true
 end
@@ -57,7 +59,7 @@ function herobrine_settings.save_settings()
         if setting_type == "table" then
             file:set(k, minetest.serialize(v))
         elseif setting_type == "string" or setting_type == "number" or setting_type == "boolean" then
-            file:set(k, v)
+            file:set(k, tostring(v))
         end
     end
     local success = file:write()
@@ -81,7 +83,14 @@ function herobrine_settings.load_settings()
         end
 
         --> Actually write to the in-game settings table.
-        herobrine_settings.set_setting(k, v)
+        local def = herobrine_settings.get_setting_def(k)
+        local def_type = def.type
+        local min, max = def.min or 0, def.max or 65536
+        if def_type == "number" and not tonumber(v) and not (tonumber(v) >= min and tonumber(v) <= max) then
+            herobrine_settings.set_setting(k, herobrine_settings.convert_value(v, "number"))
+        else
+            herobrine_settings.set_setting(k, herobrine_settings.convert_value(v, def_type))
+        end
     end
     return true
 end
