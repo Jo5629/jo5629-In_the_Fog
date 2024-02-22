@@ -6,8 +6,3 @@
 Herobrine has escaped the realms of Minecraft and has entered Minetest. Beware.
 
 Inspired from: [From the Fog Github](https://github.com/LunarEclipseStudios/From-The-Fog) and [Calvin's From the Fog Series](https://www.youtube.com/@Calvin9000).
-
-## Credits
-Wherever not stated: 
-- Code: LGPLv3.0 only
-- Textures: CC-BY-SA 3.0
