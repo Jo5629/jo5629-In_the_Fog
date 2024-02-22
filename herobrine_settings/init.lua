@@ -6,6 +6,6 @@ herobrine_settings = {
     settings_defs = {},
 }
 
-dofile(modpath .. "/settings.lua")
+dofile(modpath .. "/api.lua")
 dofile(modpath .. "/default_settings.lua")
 herobrine_settings.load_settings()

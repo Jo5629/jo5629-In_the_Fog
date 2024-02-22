@@ -1,4 +1,4 @@
-# Settings API
+# Herobrine Settings API
 
 ## How to register a setting.
 
