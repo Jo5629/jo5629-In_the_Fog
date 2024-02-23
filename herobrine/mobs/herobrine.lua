@@ -33,6 +33,7 @@ local def = {
 		punch_start = 189, --200
 		punch_end = 198 --219
 	},
+	glow = 8,
 
 	do_custom = function(self, dtime)
 		local object = self.object

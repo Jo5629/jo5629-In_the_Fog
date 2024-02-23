@@ -1,13 +1,17 @@
 function herobrine.find_position_near(pos)
-    local range = math.random(40, 60)
-    local pos1 = {x = pos.x - range, y = pos.y, z = pos.z - range}
-    local pos2 = {x = pos.x + range, y = pos.y + range, z = pos.z + range}
+    local range = math.random(40, 60) --> As long as the range is <= 160 we will be okay.
+    local min = herobrine_settings.settings.despawn_radius + 10
+    local outside = minetest.get_node_light(pos, 0.5) == 15
+    if not outside then min = herobrine_settings.settings.despawn_radius + 5 end
+    local pos1 = {x = pos.x - range, y = pos.y - 10, z = pos.z - range}
+    local pos2 = {x = pos.x + range, y = pos.y + 10, z = pos.z + range}
     local nodes = minetest.find_nodes_in_area_under_air(pos1, pos2, herobrine_settings.settings.spawnable_on)
     table.shuffle(nodes, 1, #nodes)
     local found = false
     local newpos = pos
     for _, node_pos in pairs(nodes) do
-        if vector.distance(pos, node_pos) > 30 then
+        local temp_pos = {x = node_pos.x, y = node_pos.y + 2, z = node_pos.z}
+        if vector.distance(pos, node_pos) > min and minetest.line_of_sight(pos, temp_pos) and minetest.get_node(temp_pos).name == "air"  then
             newpos = node_pos
             found = true
             break
@@ -22,8 +26,10 @@ function herobrine.find_position_near(pos)
 end
 
 function herobrine.stalk_player(pname, pos)
-    local objref = minetest.add_entity(pos, "herobrine:herobrine_stalker")
-    local obj = objref:get_luaentity()
+    local obj = mobs:add_mob(pos, {
+        name = "herobrine:herobrine_stalker",
+        ignore_count = true
+    })
     obj:yaw_to_pos(minetest.get_player_by_name(pname):get_pos(), 0)
     obj.facing_pname = pname
     minetest.sound_play({name = "herobrine_stalking"}, {to_player = pname}, true)

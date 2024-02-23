@@ -1,3 +1,6 @@
+local despawn_radius = herobrine_settings.settings.despawn_radius
+local despawn_timer = herobrine_settings.settings.despawn_timer
+
 local def = {
 	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.8,0.35},
     visual = "mesh",
@@ -17,8 +20,9 @@ local def = {
 	fall_damage = 0,
 	knock_back = false,
     immune_to = {"all"},
+	glow = 8,
 
-	after_activate = function(self)
+	on_spawn = function(self)
 		self.despawn_timer = 0
 
 		local pos = {}
@@ -32,7 +36,9 @@ local def = {
 		self:yaw_to_pos(pos, 0)
 	end,
 	do_punch = function (self)
+		minetest.log("action", "[In the Fog] Herobrine despawned because he was punched.")
 		mobs:remove(self)
+		return false
 	end,
     do_custom = function(self, dtime)
 		self.owner = nil
@@ -40,7 +46,6 @@ local def = {
 		local obj_pos = object:get_pos()
 
 	    self.despawn_timer = self.despawn_timer + dtime
-		local despawn_radius = herobrine_settings.settings.despawn_radius
 
 		local pos = {}
 		if self.facing_pname == nil then
@@ -51,12 +56,12 @@ local def = {
 			pos = player:get_pos()
 		end
 
-		if self.despawn_timer >= herobrine_settings.settings.despawn_timer then
+		if self.despawn_timer >= despawn_timer then
 			mobs:remove(self)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
 			return false
 		end
-		if self.despawn_timer >= (0.75 * herobrine_settings.settings.despawn_timer) and not self:line_of_sight(obj_pos, pos) then
+		if self.despawn_timer >= (0.75 * despawn_timer) and not self:line_of_sight({x = obj_pos.x, y = obj_pos.y + 2, z = obj_pos.z}, pos) then
 			mobs:remove(self)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to being out of sight.")
 			return false
@@ -75,6 +80,12 @@ local def = {
 	    self:stop_attack()
     end,
 }
+
+--> Update the setting values because they do not work?
+minetest.register_globalstep(function(dtime)
+	despawn_radius = herobrine_settings.settings.despawn_radius
+	despawn_timer = herobrine_settings.settings.despawn_timer
+end)
 
 mobs:register_mob("herobrine:herobrine_stalker", def)
 mobs:register_egg("herobrine:herobrine_stalker", "Spawn Stalking Herobrine", "herobrine_spawn_egg.png", 0, false)
