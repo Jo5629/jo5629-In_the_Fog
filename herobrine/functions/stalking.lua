@@ -3,8 +3,8 @@ function herobrine.find_position_near(pos)
     local min = herobrine_settings.settings.despawn_radius + 10
     local outside = minetest.get_node_light(pos, 0.5) == 15
     if not outside then min = herobrine_settings.settings.despawn_radius + 5 end
-    local pos1 = {x = pos.x - range, y = pos.y - 10, z = pos.z - range}
-    local pos2 = {x = pos.x + range, y = pos.y + 10, z = pos.z + range}
+    local pos1 = {x = pos.x - range, y = pos.y - range, z = pos.z - range}
+    local pos2 = {x = pos.x + range, y = pos.y + range, z = pos.z + range}
     local nodes = minetest.find_nodes_in_area_under_air(pos1, pos2, herobrine_settings.settings.spawnable_on)
     table.shuffle(nodes, 1, #nodes)
     local found = false
@@ -50,7 +50,9 @@ minetest.register_globalstep(function(dtime)
         local player = players[math.random(1, #players)]
         local name = player:get_player_name()
         local pos = herobrine.find_position_near(player:get_pos())
-        herobrine.stalk_player(name, pos)
+        if minetest.pos_to_string(pos, 1) ~= minetest.pos_to_string(player:get_pos(), 1) then
+            herobrine.stalk_player(name, pos)
+        end
         timer = 0
     end
 end)

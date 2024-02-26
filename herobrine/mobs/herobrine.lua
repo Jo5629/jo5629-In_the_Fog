@@ -1,8 +1,8 @@
 local def = {
-	type = "npc", -->  --> Somehow an npc-type mob will not despawn but a monster-type will???.
+	type = "monster", -->  --> Somehow an npc-type mob will not despawn but a monster-type will???.
     passive = false,
     attack_type = "dogfight",
-	pathfinding = 2,
+	pathfinding = true,
 	hp_min = 300,
     hp_max = 300,
 	armor = 100,
@@ -15,7 +15,7 @@ local def = {
 	makes_footstep_sound = true,
 	sounds = {},
     walk_velocity = 1,
-    run_velocity = 10,
+    run_velocity = 7,
 	pushable = true,
 	view_range = 150,
 	fear_height = 0,
@@ -34,19 +34,7 @@ local def = {
 		punch_end = 198 --219
 	},
 	glow = 8,
-
-	do_custom = function(self, dtime)
-		local object = self.object
-		self.owner = nil
-		local objs = minetest.get_objects_inside_radius(object:get_pos(), herobrine_settings.settings.object_radius)
-		table.shuffle(objs, 1, #objs)
-		for _, obj in pairs(objs) do
-			if obj:is_player() then
-				self:do_attack(obj)
-				break
-			end
-		end
-	end,
+	fire_damage = 0,
 }
 
 mobs:register_mob("herobrine:herobrine", def)
