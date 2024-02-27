@@ -6,7 +6,7 @@ local def = {
 	hp_min = 300,
     hp_max = 300,
 	armor = 100,
-	damage = 100,
+	damage = 15,
 	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.8,0.35},
     visual = "mesh",
     mesh = "herobrine.b3d",
@@ -14,7 +14,7 @@ local def = {
 	jump = true,
 	makes_footstep_sound = true,
 	sounds = {},
-    walk_velocity = 1,
+    walk_velocity = 1.3,
     run_velocity = 7,
 	pushable = true,
 	view_range = 150,
@@ -35,7 +35,34 @@ local def = {
 	},
 	glow = 8,
 	fire_damage = 0,
+
+	on_spawn = function(self)
+		self.despawn_timer = 0
+	end,
+	on_die = function(self, pos)
+		herobrine.lightning_strike(pos)
+		return false
+	end,
+	do_custom = function(self, dtime)
+		self.despawn_timer = self.despawn_timer + dtime
+		if self.despawn_timer >= herobrine_settings.settings.despawn_timer then
+			herobrine.lightning_strike(self.object:get_pos())
+			mobs:remove(self)
+			return false
+		end
+	end,
 }
 
 mobs:register_mob("herobrine:herobrine", def)
 mobs:register_egg("herobrine:herobrine", "Spawn Herobrine", "herobrine_spawn_egg.png", 0, false)
+
+--> Despawn Herobrine after he kills a player.
+minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+	if player:get_hp() > 0 and player:get_hp() - damage <= 0 and hitter then --> From https://github.com/appgurueu/deathlist/blob/master/main.lua#L242
+		minetest.after(2, function()
+			herobrine.lightning_strike(hitter:get_pos())
+			hitter:remove()
+			minetest.chat_send_all("<Herobrine> I will return.")
+		end)
+	end
+end)

@@ -20,9 +20,7 @@ minetest.register_node("herobrine:shrine_node", {
                 minetest.set_timeofday(20/24)
             end
             minetest.after(2, function()
-                if minetest.get_modpath("lightning") then
-                    lightning.strike(flame_pos)
-                end
+                herobrine.lightning_strike(flame_pos)
                 if node_name == "fire:basic_flame" or node_name == "lightning:dying_flame" or node_name == "air" then
                     minetest.set_node(flame_pos, {name = "fire:permanent_flame"})
                 end
@@ -35,4 +33,13 @@ minetest.register_node("herobrine:shrine_node", {
         else
         end
     end
+})
+
+minetest.register_craft({
+    type = "shapeless",
+    output = "herobrine:shrine_node 2",
+    recipe = {
+        "default:coalblock",
+        "default:diamond"
+    },
 })

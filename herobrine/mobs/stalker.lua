@@ -61,11 +61,6 @@ local def = {
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
 			return false
 		end
-		if self.despawn_timer >= (0.75 * despawn_timer) and not self:line_of_sight({x = obj_pos.x, y = obj_pos.y + 2, z = obj_pos.z}, pos) then
-			mobs:remove(self)
-			minetest.log("action", "[In the Fog] Herobrine despawned due to being out of sight.")
-			return false
-		end
 
 		local objects = minetest.get_objects_inside_radius(obj_pos, despawn_radius)
 		for _, obj in pairs(objects) do
