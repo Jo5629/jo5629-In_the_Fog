@@ -59,7 +59,7 @@ mobs:register_egg("herobrine:herobrine", "Spawn Herobrine", "herobrine_spawn_egg
 --> Despawn Herobrine after he kills a player.
 minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
 	local luaentity = hitter:get_luaentity()
-	if player:get_hp() > 0 and player:get_hp() - damage <= 0 and luaentity.name == "herobrine:herobrine" then --> From https://github.com/appgurueu/deathlist/blob/master/main.lua#L242
+	if player:get_hp() > 0 and player:get_hp() - damage <= 0 and luaentity.name == "herobrine:herobrine" and minetest.is_player(player) then --> From https://github.com/appgurueu/deathlist/blob/master/main.lua#L242
 		minetest.after(2, function()
 			herobrine.lightning_strike(hitter:get_pos())
 			mobs:remove(luaentity)
