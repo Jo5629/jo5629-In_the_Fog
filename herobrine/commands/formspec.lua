@@ -1,6 +1,7 @@
 local gui = flow.widgets
 
 local my_gui = flow.make_gui(function(player, ctx)
+    local has = minetest.check_player_privs(player, {herobrine_admin = true})
     table.sort(herobrine_settings.get_settings_list(), function (a, b)
         return string.upper(a) < string.upper(b)
     end)
@@ -18,10 +19,12 @@ local my_gui = flow.make_gui(function(player, ctx)
         table.insert(vbox, gui.Field{name = v, label = string.format("%s - %s", minetest.colorize("#BFFF00", v), def.description), default = default, h = 1.3})
     end
 
-   return gui.VBox{
+    local formspec = gui.VBox{
         gui.Label{label = "In the Fog Settings Page:", align_h = "centre"},
         gui.ScrollableVBox(vbox),
-        gui.Button{
+    }
+    if has then
+        table.insert(formspec, gui.Button{
             label = "Save Settings",
             h = 1.3,
             on_event = function(player, ctx)
@@ -36,8 +39,9 @@ local my_gui = flow.make_gui(function(player, ctx)
                     minetest.chat_send_player(player:get_player_name(), "Was not able to save to config file.")
                 end
             end
-        }
-    }
+        })
+    end
+   return formspec
 end)
 
 herobrine.register_subcommand("settings", {

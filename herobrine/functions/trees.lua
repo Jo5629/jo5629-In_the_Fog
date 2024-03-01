@@ -1,4 +1,4 @@
---> Very defective because some leaves are still left behind.
+--> Some of the leaves might be cut off.
 minetest.register_on_generated(function(minp, maxp, blockseed)
     local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
     minp, maxp = vm:get_emerged_area() --> Somehow this works but the original minp and maxp do not???

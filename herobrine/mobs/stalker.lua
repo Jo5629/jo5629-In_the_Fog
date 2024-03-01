@@ -66,6 +66,7 @@ local def = {
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
 				mobs:remove(self)
+				herobrine.jumpscare_player(obj, nil, true)
 				minetest.log("action", string.format("[In the Fog] Herobrine despawned due to a player being within %d blocks of it.", despawn_radius))
 				return false
 			end

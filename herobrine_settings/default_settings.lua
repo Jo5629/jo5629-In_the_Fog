@@ -21,7 +21,7 @@ herobrine_settings.register_setting("despawn_timer", {
 herobrine_settings.register_setting("despawn_radius", {
     type = "number",
     description = "How close a player has to be to Stalking Herobrine for him to despawn.",
-    value = 15
+    value = 5
 })
 
 herobrine_settings.register_setting("object_radius", {
