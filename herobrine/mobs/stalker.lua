@@ -1,5 +1,5 @@
-local despawn_radius = herobrine_settings.settings.despawn_radius
-local despawn_timer = herobrine_settings.settings.despawn_timer
+local despawn_radius = herobrine_settings.get_setting("despawn_radius")
+local despawn_timer = herobrine_settings.get_setting("despawn_timer")
 
 local def = {
 	collisionbox = {-0.35,-1.0,-0.35, 0.35,0.8,0.35},
@@ -79,8 +79,8 @@ local def = {
 
 --> Update the setting values because they do not work?
 minetest.register_globalstep(function(dtime)
-	despawn_radius = herobrine_settings.settings.despawn_radius
-	despawn_timer = herobrine_settings.settings.despawn_timer
+	despawn_radius = herobrine_settings.get_setting("despawn_radius")
+	despawn_timer = herobrine_settings.get_setting("despawn_timer")
 end)
 
 mobs:register_mob("herobrine:herobrine_stalker", def)

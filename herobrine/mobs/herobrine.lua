@@ -45,7 +45,7 @@ local def = {
 	end,
 	do_custom = function(self, dtime)
 		self.despawn_timer = self.despawn_timer + dtime
-		if self.despawn_timer >= herobrine_settings.settings.despawn_timer then
+		if self.despawn_timer >= herobrine_settings.get_setting("despawn_timer") then
 			herobrine.lightning_strike(self.object:get_pos())
 			mobs:remove(self)
 			return false

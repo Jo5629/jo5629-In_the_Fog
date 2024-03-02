@@ -1,11 +1,11 @@
 function herobrine.find_position_near(pos)
     local range = math.random(40, 60) --> As long as the range is <= 160 we will be okay.
-    local min = herobrine_settings.settings.despawn_radius + 10
+    local min = herobrine_settings.get_setting("despawn_radius") + 10
     local outside = minetest.get_node_light(pos, 0.5) == 15
-    if not outside then min = herobrine_settings.settings.despawn_radius + 5 end
+    if not outside then min = herobrine_settings.get_setting("despawn_radius") + 5 end
     local pos1 = {x = pos.x - range, y = pos.y - range, z = pos.z - range}
     local pos2 = {x = pos.x + range, y = pos.y + range, z = pos.z + range}
-    local nodes = minetest.find_nodes_in_area_under_air(pos1, pos2, herobrine_settings.settings.spawnable_on)
+    local nodes = minetest.find_nodes_in_area_under_air(pos1, pos2, herobrine_settings.get_setting("spawnable_on"))
     table.shuffle(nodes, 1, #nodes)
     local found = false
     local newpos = pos
@@ -36,10 +36,11 @@ function herobrine.stalk_player(pname, pos)
     minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. pname .. ".")
 end
 
-local max_time = herobrine_settings.settings.stalking_timer
+local max_time = herobrine_settings.get_setting("stalking_timer")
 local timer = 0
+local chance = 100
 minetest.register_globalstep(function(dtime)
-    if minetest.get_day_count() < herobrine_settings.settings.stalking_days then
+    if minetest.get_day_count() < herobrine_settings.get_setting("stalking_days") then
         timer = 0
         return
     end

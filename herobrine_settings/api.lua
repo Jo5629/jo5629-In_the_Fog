@@ -8,9 +8,9 @@ function herobrine_settings.register_setting(name, def)
     end
     if def.description == nil then def.description = "Not defined." end
 
-    herobrine_settings.settings[name] = def.value
     herobrine_settings.settings_defs[name] = def
     table.insert(herobrine_settings.settings_list, name)
+    herobrine_settings.set_setting(name, def.value)
     minetest.log("action", string.format("[In the Fog] Registered setting: %s", name))
     return true
 end
