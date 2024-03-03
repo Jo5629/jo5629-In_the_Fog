@@ -82,7 +82,7 @@ Spawns a lightning strike at `pos`, only if the mod `lightning` by sofar is enab
 
 ### `herobrine.find_position_near(pos)`
 
-This function is used in `herobrine/functions/stalking.lua`. Returns another position if one is found, otherwise returns `pos`.
+This function is used in `herobrine/functions/stalking.lua`. Returns `newpos` and `true` for success. Otherwise returns `pos` and `false`.
 
 ### `herobrine.stalk_player(pname, pos)`
 
