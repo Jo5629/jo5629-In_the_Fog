@@ -16,6 +16,9 @@ function herobrine_settings.register_setting(name, def)
 end
 
 function herobrine_settings.convert_value(val, to_type)
+    if type(val) == to_type then
+        return val
+    end
     if not types[to_type] then return nil end
     if to_type == "number" then
        return tonumber(val)
@@ -42,7 +45,9 @@ function herobrine_settings.get_settings_list()
 end
 
 function herobrine_settings.set_setting(name, val)
-    if val == nil or herobrine_settings.get_setting_def(name).type ~= type(val) then
+    local def = herobrine_settings.get_setting_def(name)
+    local min, max = def.min or 0, def.max or 65536
+    if val == nil or def.type ~= type(val) or ( type(val) == "number" and not (val >= min and val <= max)) then
         minetest.log("warning", string.format("[In the Fog] Was not able to overwrite setting: %s.", name))
         return false
     end
@@ -84,12 +89,11 @@ function herobrine_settings.load_settings()
 
         --> Actually write to the in-game settings table.
         local def = herobrine_settings.get_setting_def(k)
-        local def_type = def.type
         local min, max = def.min or 0, def.max or 65536
-        if def_type == "number" and not tonumber(v) and not (tonumber(v) >= min and tonumber(v) <= max) then
+        if def.type == "number" and tonumber(v) ~= nil and (tonumber(v) >= min and tonumber(v) <= max) then
             herobrine_settings.set_setting(k, herobrine_settings.convert_value(v, "number"))
         else
-            herobrine_settings.set_setting(k, herobrine_settings.convert_value(v, def_type))
+            herobrine_settings.set_setting(k, herobrine_settings.convert_value(v, def.type))
         end
     end
     return true

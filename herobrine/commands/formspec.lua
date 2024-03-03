@@ -7,16 +7,22 @@ local my_gui = flow.make_gui(function(player, ctx)
     end)
 
     local vbox = {name = "vbox1", h = 15, w = 12, spacing = 0.5}
-    for _, v in pairs(herobrine_settings.get_settings_list()) do
-        local def = herobrine_settings.get_setting_def(v)
-        local default = def.value
-        if def.type == "table" then
+    for _, name in pairs(herobrine_settings.get_settings_list()) do
+        local def = herobrine_settings.get_setting_def(name)
+        local default = herobrine_settings.get_setting(name) or def.value
+        local type = def.type
+        if type == "table" then
             default = minetest.serialize(default)
-        elseif def.type ~= "string" then
+        elseif type ~= "string" then
             default = tostring(default)
         end
 
-        table.insert(vbox, gui.Field{name = v, label = string.format("%s - %s", minetest.colorize("#BFFF00", v), def.description), default = default, h = 1.3})
+        local label = string.format("%s - %s", minetest.colorize("#BFFF00", name), def.description)
+        if type == "boolean" then
+            table.insert(vbox, gui.Checkbox{name = name, label = label,})
+        else
+            table.insert(vbox, gui.Field{name = name, label = label, default = default, h = 1.3})
+        end
     end
 
     local formspec = gui.VBox{
@@ -30,14 +36,24 @@ local my_gui = flow.make_gui(function(player, ctx)
             on_event = function(player, ctx)
                 for _, name in pairs(herobrine_settings.get_settings_list()) do
                     local def = herobrine_settings.get_setting_def(name)
-                    herobrine_settings.set_setting(name, herobrine_settings.convert_value(ctx.form[name], def.type))
+                    local value = herobrine_settings.convert_value(ctx.form[name], def.type) or def.value
+                    herobrine_settings.set_setting(name, value)
+                    if def.type == "table" then
+                        ctx.form[name] = minetest.serialize(value)
+                    else
+                        ctx.form[name] = value
+                    end
                 end
                 local success = herobrine_settings.save_settings()
+                local name = player:get_player_name()
                 if success then
-                    minetest.chat_send_player(player:get_player_name(), "Successfully saved to config file.")
+                    minetest.chat_send_player(name, "Successfully saved to config file.")
+                    minetest.chat_send_player(name, minetest.colorize("#FF0000", "Some changes may require a restart to be fully activated."))
                 else
-                    minetest.chat_send_player(player:get_player_name(), "Was not able to save to config file.")
+                    minetest.chat_send_player(name, "Was not able to save to config file.")
                 end
+
+                return true
             end
         })
     end

@@ -6,7 +6,7 @@ function herobrine.find_position_near(pos)
     local pos1 = {x = pos.x - range, y = pos.y - range, z = pos.z - range}
     local pos2 = {x = pos.x + range, y = pos.y + range, z = pos.z + range}
     local nodes = minetest.find_nodes_in_area_under_air(pos1, pos2, herobrine_settings.get_setting("spawnable_on"))
-    table.shuffle(nodes, 1, #nodes)
+    table.shuffle(nodes)
     local found = false
     local newpos = pos
     for _, node_pos in pairs(nodes) do
@@ -19,9 +19,9 @@ function herobrine.find_position_near(pos)
     end
     if found then
         newpos.y = newpos.y + 2
-        return newpos
+        return newpos, found
     else
-        return pos
+        return pos, found
     end
 end
 
@@ -38,9 +38,9 @@ end
 
 local max_time = herobrine_settings.get_setting("stalking_timer")
 local timer = 0
-local chance = 100
+local chance = herobrine_settings.get_setting("stalking_chance")
 minetest.register_globalstep(function(dtime)
-    if minetest.get_day_count() < herobrine_settings.get_setting("stalking_days") then
+    if minetest.get_day_count() < herobrine_settings.get_setting("stalking_days") or not (math.random(1, 100) <= chance) then
         timer = 0
         return
     end
@@ -58,6 +58,7 @@ minetest.register_globalstep(function(dtime)
     end
 end)
 
+--> Chatcommands.
 local function hud_waypoint_def(pos)
     local def = {
     hud_elem_type = "waypoint",
@@ -72,8 +73,12 @@ end
 local function stalk_player(pname, waypoint)
      local player = minetest.get_player_by_name(pname)
     if player then
-        local pos = herobrine.find_position_near(player:get_pos())
-        herobrine.stalk_player(pname, pos)
+        local pos, success = herobrine.find_position_near(player:get_pos())
+        if success then
+            herobrine.stalk_player(pname, pos)
+        else
+            return false, string.format("Could not find an eligible node to stalk player %s.", pname)
+        end
 
         if waypoint == "true" then
             local id = player:hud_add(hud_waypoint_def(pos))

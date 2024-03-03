@@ -6,7 +6,7 @@ local def = {
     visual = "mesh",
     mesh = "herobrine.b3d",
     textures = {"herobrine.png"},
-    type = "npc", --> Somehow an npc-type mob will not despawn but a monster-type will???.
+    type = "monster", --> Somehow an npc-type mob will not despawn but a monster-type will???.
     passive = false,
     attack_type = "dogfight",
     hp_min = 300,
@@ -35,8 +35,10 @@ local def = {
 		end
 		self:yaw_to_pos(pos, 0)
 	end,
-	do_punch = function (self)
+	do_punch = function (self, hitter)
 		minetest.log("action", "[In the Fog] Herobrine despawned because he was punched.")
+		local chance = math.random(1, 2) == 1
+		if chance then herobrine.jumpscare_player(hitter, nil, true) end
 		mobs:remove(self)
 		return false
 	end,
@@ -66,7 +68,8 @@ local def = {
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
 				mobs:remove(self)
-				herobrine.jumpscare_player(obj, nil, true)
+				local chance = math.random(1, 2) == 1
+				if chance then herobrine.jumpscare_player(obj, nil, true) end
 				minetest.log("action", string.format("[In the Fog] Herobrine despawned due to a player being within %d blocks of it.", despawn_radius))
 				return false
 			end

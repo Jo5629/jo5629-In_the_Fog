@@ -46,3 +46,16 @@ herobrine.register_subcommand("save_settings", {
         end
     end,
 })
+
+herobrine.register_subcommand("load_settings", {
+    description = "Load the settings from herobrine_settings.conf",
+    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    func = function(name)
+        local success = herobrine_settings.load_settings()
+        if success then
+            minetest.chat_send_player(name, "Able to load from config file.")
+        else
+            minetest.chat_send_player(name, "Was not able to load from config file,")
+        end
+    end
+})
