@@ -1,3 +1,5 @@
+local storage = minetest.get_mod_storage()
+
 local function num_mese(pos)
     local pos1 = {x = pos.x + 1, y = pos.y - 1, z = pos.z + 1}
     local pos2 = {x = pos.x - 1, y = pos.y - 1, z = pos.z - 1}
@@ -6,7 +8,7 @@ local function num_mese(pos)
 end
 
 local interval = herobrine_settings.get_setting("shrine_interval")
-local old_time = 0
+local old_time = storage:get_int("herobrine:shrine_gametime") or 0
 minetest.register_node("herobrine:shrine_node", {
     description = "Node used for the Herobrine shrine",
     tiles = {"default_coal_block.png"},
@@ -37,6 +39,7 @@ minetest.register_node("herobrine:shrine_node", {
                 })
             end)
             old_time = minetest.get_gametime()
+            storage:set_int("herobrine:shrine_gametime", old_time)
         end
     end
 })
