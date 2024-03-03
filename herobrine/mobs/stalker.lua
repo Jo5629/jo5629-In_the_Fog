@@ -37,8 +37,7 @@ local def = {
 	end,
 	do_punch = function (self, hitter)
 		minetest.log("action", "[In the Fog] Herobrine despawned because he was punched.")
-		local chance = math.random(1, 2) == 1
-		if chance then herobrine.jumpscare_player(hitter, nil, true) end
+		if math.random(1, 100) <= herobrine_settings.get_setting("jumpscare_chance") then herobrine.jumpscare_player(hitter, nil, true) end
 		mobs:remove(self)
 		return false
 	end,
@@ -68,8 +67,7 @@ local def = {
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
 				mobs:remove(self)
-				local chance = math.random(1, 2) == 1
-				if chance then herobrine.jumpscare_player(obj, nil, true) end
+				if math.random(1, 100) <= herobrine_settings.get_setting("jumpscare_chance") then herobrine.jumpscare_player(obj, nil, true) end
 				minetest.log("action", string.format("[In the Fog] Herobrine despawned due to a player being within %d blocks of it.", despawn_radius))
 				return false
 			end

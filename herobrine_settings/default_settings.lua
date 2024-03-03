@@ -68,3 +68,41 @@ herobrine_settings.register_setting("game_crash_chance", {
     value = 10,
     max = 100,
 })
+
+herobrine_settings.register_setting("footsteps_chance", {
+    type = "number",
+    description = "The chance of footsteps randomly playing.",
+    value = 20,
+    max = 100,
+})
+
+herobrine_settings.register_setting("footsteps_interval", {
+    type = "number",
+    description = "Interval between footsteps playing (in seconds)",
+    value = 600,
+})
+
+herobrine_settings.register_setting("leafless_trees_enabled", {
+    type = "boolean",
+    description = "Enable/disable leafless trees. ENABLE AT YOUR OWN RISK.",
+    value = false,
+})
+
+herobrine_settings.register_setting("schematics_enabled", {
+    type = "boolean",
+    description = "Enable/disable schematics.",
+    value = true,
+})
+
+herobrine_settings.register_setting("jumpscare_chance", {
+    type = "number",
+    description = "The chance of getting jumpscared by Stalking Herobrine.",
+    value = 50,
+    max = 100,
+})
+
+herobrine_settings.register_setting("shrine_interval", {
+    type = "number",
+    description = "Interval between lighting shrines (in seconds)",
+    value = 1200,
+})

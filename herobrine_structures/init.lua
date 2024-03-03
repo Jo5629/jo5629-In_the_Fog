@@ -1,5 +1,8 @@
 local structure_modpath = minetest.get_modpath(minetest.get_current_modname()) .. "/schematics"
 
+local enabled = herobrine_settings.get_setting("schematics_enabled")
+if not enabled then return end
+
 --> Tunnel.
 minetest.register_decoration({
     name = "herobrine_structures:tunnel",
