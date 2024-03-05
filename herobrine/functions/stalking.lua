@@ -73,7 +73,9 @@ end
 local function stalk_player(pname, waypoint)
      local player = minetest.get_player_by_name(pname)
     if player then
-        local pos, success = herobrine.find_position_near(player:get_pos())
+        local ppos = player:get_pos()
+        ppos.y = ppos.y + 1
+        local pos, success = herobrine.find_position_near(ppos)
         if success then
             herobrine.stalk_player(pname, pos)
         else

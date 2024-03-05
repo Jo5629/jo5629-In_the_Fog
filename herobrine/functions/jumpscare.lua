@@ -17,13 +17,30 @@ function herobrine.jumpscare_player(player, duration, sound)
     if sound then
         minetest.sound_play({name = "herobrine_jumpscare"}, {object = player, max_hear_distance = 10}, true)
     end
+    minetest.log("action", string.format("[In the Fog] Jumpscared %s.", player:get_player_name()))
 end
+
+herobrine.register_subcommand("jumpscare", {
+    hidden = true,
+    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    description = "Jumpscare a player.",
+    func = function(name)
+        local player = minetest.get_player_by_name(name)
+        if player then
+            herobrine.jumpscare_player(player, nil, true)
+        end
+    end,
+})
 
 herobrine.register_subcommand("jumpscare :target", {
     privs = {server = true, interact = true, shout = true, herobrine_admin = true},
     description = "Jumpscare a player.",
     func = function(name, target)
         local player = minetest.get_player_by_name(target)
-        herobrine.jumpscare_player(player, nil, true)
+        if player then
+            herobrine.jumpscare_player(player, nil, true)
+        else
+            return string.format("Was not able to find %s.", target)
+        end
     end,
 })

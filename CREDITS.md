@@ -9,9 +9,13 @@ Wherever not stated:
 
 ## [herobrine/](herobrine/)
 
+### Models
+
+- herobrine.b3d - MirceaKitsune (CC BY-SA 3.0) - [Mobs NPC](https://codeberg.org/tenplus1/mobs_npc/)
+
 ### Textures
 
-- herobrine.png - Frey (CC BY-SA 3.0) - [Skins DB](https://skinsdb.terraqueststudios.net/) #1508
+- herobrine.png - Jordach (CC BY-SA 3.0) - [Player API](https://github.com/minetest/minetest_game/tree/master/mods/player_api), modified by Jo5629
 
 ### Sounds
 

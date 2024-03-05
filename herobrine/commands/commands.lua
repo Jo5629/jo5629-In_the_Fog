@@ -38,8 +38,8 @@ herobrine.register_subcommand("save_settings", {
     description = "Saves the current settings to a config file.",
     privs = {server = true, interact = true, shout = true, herobrine_admin = true},
     func = function(name)
-        local status = herobrine_settings.save_settings()
-        if status then
+        local success = herobrine_settings.save_settings()
+        if success then
             minetest.chat_send_player(name, "Able to save to config file.")
         else
             minetest.chat_send_player(name, "Was not able to save to config file,")
