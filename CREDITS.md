@@ -22,5 +22,3 @@ Wherever not stated:
 - footsteps-on-gravel.ogg - [Pixabay](https://pixabay.com/sound-effects/footsteps-on-gravel-61337/)
 - herobrine_stalking.ogg - [Pixabay](https://pixabay.com/sound-effects/jumper-teleport-sound-effects-60714/)
 - herobrine_jumpscare.ogg - [Pixabay](https://pixabay.com/sound-effects/fuzzy-jumpscare-80560/)
-- herobrine_ambience1.ogg - [Pixabay](https://pixabay.com/sound-effects/suspense-creepy-ominous-ambience-14569/)
-- herobrine_ambience2.ogg - [Pixabay](https://pixabay.com/sound-effects/creepy-vocal-ambience-6074/)

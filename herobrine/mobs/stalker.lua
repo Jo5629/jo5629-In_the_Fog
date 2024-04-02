@@ -34,13 +34,11 @@ local def = {
 			pos = player:get_pos()
 		end
 		self:yaw_to_pos(pos, 0)
-		self.herobrine_ambience = herobrine.play_ambience(herobrine.get_random_sound(), math.random(15, 20))
 	end,
 	do_punch = function (self, hitter)
 		minetest.log("action", "[In the Fog] Herobrine despawned because he was punched.")
 		if math.random(1, 100) <= herobrine_settings.get_setting("jumpscare_chance") then herobrine.jumpscare_player(hitter, nil, true) end
 		mobs:remove(self)
-		minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
 		return false
 	end,
     do_custom = function(self, dtime)
@@ -61,7 +59,6 @@ local def = {
 
 		if self.despawn_timer >= despawn_timer then
 			mobs:remove(self)
-			minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
 			return false
 		end
@@ -70,7 +67,6 @@ local def = {
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
 				mobs:remove(self)
-				minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
 				if math.random(1, 100) <= herobrine_settings.get_setting("jumpscare_chance") then herobrine.jumpscare_player(obj, nil, true) end
 				minetest.log("action", string.format("[In the Fog] Herobrine despawned due to a player being within %d blocks of it.", despawn_radius))
 				return false

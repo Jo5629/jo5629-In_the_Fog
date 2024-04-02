@@ -59,14 +59,3 @@ herobrine.register_subcommand("load_settings", {
         end
     end
 })
-
-herobrine.register_subcommand("settings", {
-    description = "Shows the settings page for the In the Fog mod.",
-    privs = {interact = true},
-    func = function(name)
-        local player = minetest.get_player_by_name(name)
-        if not player then return end
-
-        herobrine_settings.setting_formspec:show(player)
-    end
-})

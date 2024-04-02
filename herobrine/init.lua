@@ -9,9 +9,9 @@ minetest.register_privilege("herobrine_admin", {
 
 --> Commands.
 dofile(modpath .. "/commands/commands.lua")
+dofile(modpath .. "/commands/formspec.lua")
 
 --> Functions.
-dofile(modpath .. "/functions/ambience.lua")
 dofile(modpath .. "/functions/stalking.lua")
 dofile(modpath .. "/functions/footsteps.lua")
 dofile(modpath .. "/functions/lightning.lua")

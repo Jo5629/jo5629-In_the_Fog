@@ -8,6 +8,5 @@ herobrine_settings = {
 
 dofile(modpath .. "/api.lua")
 dofile(modpath .. "/default_settings.lua")
-dofile(modpath .. "/formspec.lua")
 
 herobrine_settings.load_settings()

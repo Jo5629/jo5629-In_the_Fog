@@ -84,7 +84,7 @@ local function stalk_player(pname, waypoint)
 
         if waypoint == "true" then
             local id = player:hud_add(hud_waypoint_def(pos))
-            minetest.after(7, function()
+            minetest.after(5, function()
                 player:hud_remove(id)
             end)
         end
