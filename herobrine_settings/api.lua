@@ -58,7 +58,7 @@ function herobrine_settings.set_setting(name, val)
 end
 
 function herobrine_settings.save_settings()
-    local file = Settings(minetest.get_worldpath() .. "/herobrine_settings.conf")
+    local file = Settings(herobrine_settings.conf_modpath .. "/herobrine_settings.conf")
     for k, v in pairs(herobrine_settings.settings) do
         local setting_type = herobrine_settings.get_setting_def(k).type
         if setting_type == "table" then
@@ -72,9 +72,10 @@ function herobrine_settings.save_settings()
 end
 
 function herobrine_settings.load_settings()
-    local settings = Settings(minetest.get_worldpath() .. "/herobrine_settings.conf")
+    local settings = Settings(herobrine_settings.conf_modpath .. "/herobrine_settings.conf")
     local settings_table = settings:to_table()
     for k, v in pairs(settings_table) do
+        if k == nil then return end
         --> Write in the logs what settings were modified in the config file. Good for debugging.
         local old_val = herobrine_settings.get_setting(k)
         if type(old_val) == "table" then

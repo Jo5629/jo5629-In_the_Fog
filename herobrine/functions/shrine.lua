@@ -8,7 +8,7 @@ local function num_mese(pos)
 end
 
 local interval = herobrine_settings.get_setting("shrine_interval")
-local old_time = storage:get_int("herobrine:shrine_gametime") or 0
+local old_time = storage:get_int("herobrine:shrine_gametime") or interval
 minetest.register_node("herobrine:shrine_node", {
     description = "Node used for the Herobrine shrine",
     tiles = {"default_coal_block.png"},
@@ -16,8 +16,9 @@ minetest.register_node("herobrine:shrine_node", {
     groups = {cracky = 3},
     sounds = default.node_sound_stone_defaults(),
     on_ignite = function(pos, igniter)
-        if not (minetest.get_gametime() - old_time >= interval) then
-            minetest.chat_send_player(igniter:get_player_name(), "[In the Fog] Shrine cooldown is not over.")
+        local time_left = minetest.get_gametime() - old_time
+        if not (time_left >= interval) then
+            minetest.chat_send_player(igniter:get_player_name(), string.format("[In the Fog] Shrine cooldown is not over. %d seconds left.", interval - time_left))
             return
         end
         local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}

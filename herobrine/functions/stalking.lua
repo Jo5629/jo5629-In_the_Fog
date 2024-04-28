@@ -40,13 +40,17 @@ local max_time = herobrine_settings.get_setting("stalking_timer")
 local timer = 0
 local chance = herobrine_settings.get_setting("stalking_chance")
 minetest.register_globalstep(function(dtime)
-    if minetest.get_day_count() < herobrine_settings.get_setting("stalking_days") or not (math.random(1, 100) <= chance) then
+    local temp_chance = chance
+    if minetest.get_day_count() < herobrine_settings.get_setting("stalking_days") then
         timer = 0
         return
     end
 
     timer = timer + dtime
-    if timer >= max_time then
+    if (minetest.get_timeofday() * 24) >= 20 and chance ~= 0 then --> Try some weighted chance.
+        temp_chance = chance + 25
+    end
+    if timer >= max_time and math.random(1, 100) <= temp_chance then
         local players = minetest.get_connected_players()
         local player = players[math.random(1, #players)]
         local name = player:get_player_name()
@@ -84,7 +88,7 @@ local function stalk_player(pname, waypoint)
 
         if waypoint == "true" then
             local id = player:hud_add(hud_waypoint_def(pos))
-            minetest.after(5, function()
+            minetest.after(7, function()
                 player:hud_remove(id)
             end)
         end

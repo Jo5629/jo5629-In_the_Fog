@@ -52,7 +52,7 @@ herobrine_settings.register_setting("random_door_opening_interval", {
 
 herobrine_settings.register_setting("game_crash", {
     type = "boolean",
-    description = "Enable/disable Herobrine being able to crash your world.",
+    description = "Enable/disable Herobrine being able to crash your world. ENABLE AT YOUR OWN RISK.",
     value = false,
 })
 
@@ -104,5 +104,25 @@ herobrine_settings.register_setting("jumpscare_chance", {
 herobrine_settings.register_setting("shrine_interval", {
     type = "number",
     description = "Interval between lighting shrines (in seconds)",
-    value = 1200,
+    value = 2400,
+})
+
+herobrine_settings.register_setting("ambience_interval", {
+    type = "number",
+    description = "Interval between random sounds playing (in seconds).",
+    value = 480,
+})
+
+herobrine_settings.register_setting("ambience_chance", {
+    type = "number",
+    description = "The chance of a random sound playing.",
+    value = 60,
+    max = 100,
+})
+
+herobrine_settings.register_setting("convert_stalker", {
+    type = "number",
+    description = "The chance of Stalking Herobrine will convert to Regular Herobrine.",
+    value = 3,
+    max = 100,
 })
