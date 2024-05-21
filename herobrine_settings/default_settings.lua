@@ -101,6 +101,12 @@ herobrine_settings.register_setting("jumpscare_chance", {
     max = 100,
 })
 
+herobrine_settings.register_setting("jumpscare_volume", {
+    type = "number",
+    description = "How loud the jumpscare sound is. Number is divided by 100.",
+    value = 60,
+})
+
 herobrine_settings.register_setting("shrine_interval", {
     type = "number",
     description = "Interval between lighting shrines (in seconds)",
@@ -118,6 +124,12 @@ herobrine_settings.register_setting("ambience_chance", {
     description = "The chance of a random sound playing.",
     value = 60,
     max = 100,
+})
+
+herobrine_settings.register_setting("ambience_volume", {
+    type = "number",
+    description = "How loud the ambience sounds will play. Number is divided by 100.",
+    value = 25,
 })
 
 herobrine_settings.register_setting("convert_stalker", {

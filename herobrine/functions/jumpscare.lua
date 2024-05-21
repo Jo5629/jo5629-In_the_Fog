@@ -1,3 +1,4 @@
+local jumpscare_volume = herobrine_settings.get_setting("jumpscare_volume") / 100
 function herobrine.jumpscare_player(player, duration, sound)
     duration = duration or 2.5
     if not player then return false end
@@ -15,7 +16,7 @@ function herobrine.jumpscare_player(player, duration, sound)
     end)
 
     if sound then
-        minetest.sound_play({name = "herobrine_jumpscare"}, {object = player, max_hear_distance = 10}, true)
+        minetest.sound_play({name = "herobrine_jumpscare", gain = jumpscare_volume}, {object = player, max_hear_distance = 10}, true)
     end
     minetest.log("action", string.format("[In the Fog] Jumpscared %s.", player:get_player_name()))
 end

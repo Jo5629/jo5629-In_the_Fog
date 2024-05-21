@@ -25,8 +25,9 @@ function herobrine_ambience.get_random_sound()
     return sound_name, true
 end
 
+local ambience_volume = herobrine_settings.get_setting("ambience_volume") / 100
 function herobrine_ambience.play_ambience(sound_name, duration)
-    local sound = minetest.sound_play({name = sound_name, gain = 0.9}, nil, false)
+    local sound = minetest.sound_play({name = sound_name, gain = ambience_volume}, nil, false)
     local job = minetest.after(duration, function()
         if not sound then return end
         minetest.sound_fade(sound, 0.1, 0)
