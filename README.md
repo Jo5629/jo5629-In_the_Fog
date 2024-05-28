@@ -1,11 +1,23 @@
+[![ContentDB](https://content.minetest.net/packages/J05629/in_the_fog/shields/title/)](https://content.minetest.net/packages/J05629/in_the_fog/)
+[![ContentDB](https://content.minetest.net/packages/J05629/in_the_fog/shields/downloads/)](https://content.minetest.net/packages/J05629/in_the_fog/)
+
 # In the Fog
+*Herobrine* has entered Minetest. **BEWARE and TREAD LIGHTLY.**
 
-**NOTICE: This is a WIP mod. Bugs and crashes are expected and the repository might not be updated right away.**
+## **WARNINGS:**
+- Bugs and crashes should be expected.
+- This mod is more focused towards singleplayer.
+	- Multiplayer is functional, but bugs not found in singleplayer testing might appear in multiplayer.
+- Parts of the mod are able to crash your game **AT RANDOM.**
+- Parts of the mod are also able to cause permanent damage to your world.
 
-**This mod is more focused towards singleplayer. Multiplayer is functional, but there might be possible bugs.**
+## **HELP:**
+- `/herobrine help`: Shows  a list of commands within the mod. Some may be hidden from view.
+	- `herobrine_admin`: A privilege needed to execute special commands.
+- `/herobrine settings`: Shows a formspec with all of the registered settings and their values.
+	- You need `herobrine_admin` in order to update those settings and experience their effect.
+	- Some changes may require you to restart the server.
 
-## About
+[In the Fog API Documentation](https://github.com/Jo5629/jo5629-In_the_Fog/blob/main/DOCUMENTATION.md)
 
-Herobrine has entered Minetest. Beware.
-
-Inspired from: [From the Fog Github](https://github.com/LunarEclipseStudios/From-The-Fog) and [Calvin's From the Fog Series](https://www.youtube.com/@Calvin9000).
+**INSPIRATION:**  [Lunar Eclipse Studios - From the Fog](https://lunareclipse.studio/creations/from-the-fog) and [Calvin's From the Fog Series](https://www.youtube.com/@Calvin9000).
