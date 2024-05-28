@@ -1,4 +1,3 @@
-[![ContentDB](https://content.minetest.net/packages/J05629/in_the_fog/shields/title/)](https://content.minetest.net/packages/J05629/in_the_fog/)
 [![ContentDB](https://content.minetest.net/packages/J05629/in_the_fog/shields/downloads/)](https://content.minetest.net/packages/J05629/in_the_fog/)
 
 # In the Fog
