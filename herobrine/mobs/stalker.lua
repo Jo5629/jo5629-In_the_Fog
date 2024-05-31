@@ -49,16 +49,6 @@ local def = {
 		local obj_pos = object:get_pos()
 
 	    self.despawn_timer = self.despawn_timer + dtime
-
-		local pos = {}
-		if self.facing_pname == nil then
-			local players = minetest.get_connected_players()
-	    	pos = players[math.random(1, #players)]:get_pos()
-		else
-			local player = minetest.get_player_by_name(self.facing_pname)
-			pos = player:get_pos()
-		end
-
 		if self.despawn_timer >= despawn_timer then
 			mobs:remove(self)
 			if math.random(1, 100) <= herobrine_settings.get_setting("convert_stalker") then
@@ -83,8 +73,35 @@ local def = {
 			end
 		end
 
-		self:yaw_to_pos(pos, 0)
-	    self:stop_attack()
+		local pos = {}
+		if self.facing_pname == nil then
+			local players = minetest.get_connected_players()
+	    	pos = players[math.random(1, #players)]:get_pos()
+		else
+			local player = minetest.get_player_by_name(self.facing_pname)
+			pos = player:get_pos()
+			self:yaw_to_pos(pos, 0)
+			self:stop_attack()
+			if vector.distance(obj_pos, pos) > 120 then
+				minetest.log("action", "[In the Fog] Herobrine despawned because he was too far from the player.")
+				mobs:remove(self)
+				return false
+			end
+			local dir = player:get_look_dir()
+			local rayend = vector.add({x = obj_pos.x, y = obj_pos.y + 1, z = obj_pos.z}, vector.multiply(dir, 15))
+			local ray = minetest.raycast(player:get_pos(), rayend, true, false)
+			for pointed_thing in ray do
+				if pointed_thing.type ~= "object" then return end
+				if pointed_thing.ref ~= player and pointed_thing.ref ~= nil and pointed_thing.ref:get_luaentity().name == self.name then
+					if math.random(1, 100) <= (herobrine_settings.get_setting("jumpscare_chance") * 1000)then
+						herobrine.jumpscare_player(player, nil, true)
+						mobs:remove(self)
+						minetest.log("action", string.format("[In the Fog] Herobrine despawned through a player looking at him."))
+						return false
+					end
+				end
+			end
+		end	
     end,
 }
 

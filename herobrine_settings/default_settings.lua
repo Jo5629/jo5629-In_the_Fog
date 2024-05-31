@@ -138,3 +138,9 @@ herobrine_settings.register_setting("convert_stalker", {
     value = 3,
     max = 100,
 })
+
+herobrine_settings.register_setting("signs_spawnable_on", {
+    type = "table",
+    description = "Node that random signs can spawn on",
+    value = {"group:soil", "group:stone", "group:sand", "group:grass"},
+})
