@@ -1,10 +1,12 @@
-function herobrine.find_position_near(pos)
-    local range = math.random(40, 60) --> As long as the range is <= 160 we will be okay.
+function herobrine.find_position_near(pos, radius)
+    if not radius or radius > 70 then --> As long as the radius is <= 79 we will be okay. Lower the bar a little more too be safe.
+        radius = math.random(40, 60)
+    end
     local min = herobrine_settings.get_setting("despawn_radius") + 10
     local outside = minetest.get_node_light(pos, 0.5) == 15
     if not outside then min = herobrine_settings.get_setting("despawn_radius") + 5 end
-    local pos1 = {x = pos.x - range, y = pos.y - range, z = pos.z - range}
-    local pos2 = {x = pos.x + range, y = pos.y + range, z = pos.z + range}
+    local pos1 = {x = pos.x - radius, y = pos.y - radius, z = pos.z - radius}
+    local pos2 = {x = pos.x + radius, y = pos.y + radius, z = pos.z + radius}
     local nodes = minetest.find_nodes_in_area_under_air(pos1, pos2, herobrine_settings.get_setting("spawnable_on"))
     table.shuffle(nodes)
     local found = false
@@ -74,22 +76,23 @@ local function hud_waypoint_def(pos)
     return def
 end
 
-local function stalk_player(pname, waypoint)
-     local player = minetest.get_player_by_name(pname)
-    if player then
-        local ppos = player:get_pos()
+local function stalk_player(pname, target, waypoint)
+    local playerobj = minetest.get_player_by_name(pname)
+    local targetobj = minetest.get_player_by_name(target)
+    if targetobj then
+        local ppos = targetobj:get_pos()
         ppos.y = ppos.y + 1
         local pos, success = herobrine.find_position_near(ppos)
         if success then
-            herobrine.stalk_player(pname, pos)
+            herobrine.stalk_player(target, pos)
         else
-            return false, string.format("Could not find an eligible node to stalk player %s.", pname)
+            return false, string.format("Could not find an eligible node to stalk player %s.", target)
         end
 
         if waypoint == "true" then
-            local id = player:hud_add(hud_waypoint_def(pos))
+            local id = playerobj:hud_add(hud_waypoint_def(pos))
             minetest.after(7, function()
-                player:hud_remove(id)
+                playerobj:hud_remove(id)
             end)
         end
 
@@ -100,29 +103,29 @@ local function stalk_player(pname, waypoint)
 end
 
 herobrine.register_subcommand("stalk_player", {
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     hidden = true,
     description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name)
-        return stalk_player(name)
+        return stalk_player(name, name)
     end,
 })
 
 herobrine.register_subcommand("stalk_player :waypoint", {
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, waypoint)
-        return stalk_player(name, waypoint)
+        return stalk_player(name, name, waypoint)
     end
 })
 
 herobrine.register_subcommand("stalk_player :target :waypoint", {
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     description = "Stalks a player. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, target, waypoint)
         local player = minetest.get_player_by_name(target)
         if player then
-            return stalk_player(target, waypoint)
+            return stalk_player(name, target, waypoint)
         else
             return false, "Unable to find " .. target .. "."
         end

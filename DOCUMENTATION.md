@@ -57,5 +57,6 @@ herobrine_settings.register_setting("stalking_timer", {
   2. `duration` - How long the jumpscare photo will be shown on the player's screen.
   3. `sound` - If `true`, a sound will go off when a player has been jumpscared.
 - `herobrine.lighting_strike(pos)` - Spawns a lightning strike at `pos`, only if the mod `lightning` by sofar is enabled.
-- `herobrine.find_position_near(pos)` - This function is used in `herobrine/functions/stalking.lua`. Returns `newpos` and `true` for success. Otherwise returns `pos` and `false`.
+- `herobrine.find_position_near(pos, radius)` - This function is used in `herobrine/functions/stalking.lua`. Returns `newpos` and `true` for success. Otherwise returns `pos` and `false`.
+  - `radius` is a number. Must be less than or equal to 79 to stop an overflow.
 - `herobrine.stalk_player(pname, pos)` - Spawns `herobrine:herobrine_stalker` at `pos` facing `pname`.

@@ -1,5 +1,6 @@
 herobrine.commands = {}
 herobrine.commands_list = {}
+herobrine.commands.default_privs = {server = true, interact = true, shout = true, herobrine_admin = true}
 
 local cmd = chatcmdbuilder.register("herobrine", {
     description = "Command used for the In the Fog mod. Do /herobrine help to get started.",
@@ -38,7 +39,7 @@ herobrine.register_subcommand("help", {
 
 herobrine.register_subcommand("save_settings", {
     description = "Saves the current settings to a config file.",
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     func = function(name)
         local success = herobrine_settings.save_settings()
         if success then
@@ -51,7 +52,7 @@ herobrine.register_subcommand("save_settings", {
 
 herobrine.register_subcommand("load_settings", {
     description = "Load the settings from herobrine_settings.conf",
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     func = function(name)
         local success = herobrine_settings.load_settings()
         if success then
@@ -75,7 +76,7 @@ herobrine.register_subcommand("settings", {
 
 herobrine.register_subcommand("ambience :word", {
     description = "Plays ambience. Use *random to play a random sound.",
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     func = function(name, word)
         local duration = math.random(15, 20)
         if word == "*random" then

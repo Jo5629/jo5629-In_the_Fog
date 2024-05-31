@@ -1,5 +1,5 @@
 herobrine.register_subcommand("footsteps", {
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     description = "Plays footsteps to all of the players in a world.",
     func = function(name)
         for _, player in pairs(minetest.get_connected_players()) do

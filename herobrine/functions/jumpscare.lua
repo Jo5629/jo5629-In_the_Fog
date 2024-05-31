@@ -23,7 +23,7 @@ end
 
 herobrine.register_subcommand("jumpscare", {
     hidden = true,
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     description = "Jumpscare a player.",
     func = function(name)
         local player = minetest.get_player_by_name(name)
@@ -34,7 +34,7 @@ herobrine.register_subcommand("jumpscare", {
 })
 
 herobrine.register_subcommand("jumpscare :target", {
-    privs = {server = true, interact = true, shout = true, herobrine_admin = true},
+    privs = herobrine.commands.default_privs,
     description = "Jumpscare a player.",
     func = function(name, target)
         local player = minetest.get_player_by_name(target)

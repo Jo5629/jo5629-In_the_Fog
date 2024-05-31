@@ -17,7 +17,7 @@ dofile(modpath .. "/functions/lightning.lua")
 dofile(modpath .. "/functions/shrine.lua")
 dofile(modpath .. "/functions/doors.lua")
 dofile(modpath .. "/functions/jumpscare.lua")
---dofile(modpath .. "/functions/random_signs.lua")
+dofile(modpath .. "/functions/random_signs.lua")
 --dofile(modpath .. "/functions/trees.lua") Disabled till further notice. Works but needs more technical fixing.
 
 --> Mobs.

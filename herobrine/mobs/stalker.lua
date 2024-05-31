@@ -87,13 +87,15 @@ local def = {
 				mobs:remove(self)
 				return false
 			end
+			--[[ STILL VERY WIP. WILL IMPLEMENT IN THE FUTURE.
 			local dir = player:get_look_dir()
-			local rayend = vector.add({x = obj_pos.x, y = obj_pos.y + 1, z = obj_pos.z}, vector.multiply(dir, 15))
+			local temp_obj_pos = {x = obj_pos.x, y = obj_pos.y + 1, z = obj_pos.z}
+			local rayend = vector.subtract(temp_obj_pos, 5)
 			local ray = minetest.raycast(player:get_pos(), rayend, true, false)
 			for pointed_thing in ray do
 				if pointed_thing.type ~= "object" then return end
 				if pointed_thing.ref ~= player and pointed_thing.ref ~= nil and pointed_thing.ref:get_luaentity().name == self.name then
-					if math.random(1, 100) <= (herobrine_settings.get_setting("jumpscare_chance") * 1000)then
+					if math.random(1, 100) <= (herobrine_settings.get_setting("jumpscare_chance") * 100000)then
 						herobrine.jumpscare_player(player, nil, true)
 						mobs:remove(self)
 						minetest.log("action", string.format("[In the Fog] Herobrine despawned through a player looking at him."))
@@ -101,7 +103,8 @@ local def = {
 					end
 				end
 			end
-		end	
+			]]
+		end
     end,
 }
 
