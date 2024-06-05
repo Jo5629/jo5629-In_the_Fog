@@ -15,7 +15,7 @@ Returns `true` for success and `false` for failure.
    2. `description` = Description of the setting. Defaults to `""`
    3. `value`= Initial value to be registered. The value has to be equal to the type, otherwise it will not be registered.
 
-### An Example
+**EXAMPLE:**
 
 ``` lua
 herobrine_settings.register_setting("stalking_timer", {
@@ -25,7 +25,7 @@ herobrine_settings.register_setting("stalking_timer", {
 })
 ```
 
-### More Settings API Functions.
+### More Settings API Functions
 
 - `herobrine_settings.get_setting(name)` - Returns a setting's value or `nil`
 - `herobrine_settings.get_setting_def(name)` - Returns the definition of setting `name` or `nil`. Definition is the equivalent of the `def` in `herobrine_settings.register_setting`.
@@ -47,7 +47,29 @@ herobrine_settings.register_setting("stalking_timer", {
   - `sound` - a handle returned by `minetest.sound_play`
   - `job` - Returns a job table from `minetest.after`
 
-## Miscellaneous API Functions.
+## Herobrine Signs API
+
+- `herobrine.signs.register_text(lang_table, text_table)` - Registers all the strings in `text_table` into every single language in `lang_table`.
+
+**EXAMPLE:**
+
+``` lua
+  herobrine.signs.register_text({"en"}, {
+        "I am watching you...",
+        "On your six!",
+})
+```
+
+- `herobrine.signs.get_full_lang_table()` - Returns all of the languages in a key-value table.
+- `herobrine.signs.get_lang_table(lang)` - Returns all the text values in a specific language, `lang`. Returns `nil` if language not found.
+- `herobrine.signs.generate_random_text(lang)` - Returns a random string from a specific language.
+- `herobrine.signs.find_position_near(pos, radius)` - Mirror function of `herobrine.find_position_near(pos, radius)`.
+  - Uses the setting `signs_spawnable_on`.
+  - Returns an **AIR NODE** one block above the original position.
+- `herobrine.signs.place_sign(pos, text)` - Places a sign at `pos` with `text` as a string on it.
+  - Supports `sign_lib`.
+
+## Miscellaneous API Functions
 
 - `herobrine.register_subcommand(name, def)` - Registers a subcommand under the `herobrine` command.
   1. `name` and `def` are both the equivalent to `name` and `def` from lib_chatcmdbuilder.
@@ -57,6 +79,7 @@ herobrine_settings.register_setting("stalking_timer", {
   2. `duration` - How long the jumpscare photo will be shown on the player's screen.
   3. `sound` - If `true`, a sound will go off when a player has been jumpscared.
 - `herobrine.lighting_strike(pos)` - Spawns a lightning strike at `pos`, only if the mod `lightning` by sofar is enabled.
-- `herobrine.find_position_near(pos, radius)` - This function is used in `herobrine/functions/stalking.lua`. Returns `newpos` and `true` for success. Otherwise returns `pos` and `false`.
+- `herobrine.find_position_near(pos, radius)` - This function is used in `herobrine/functions/stalking.lua`. Finds a position that meets the standards of `spawnable_on` . Returns `newpos` and `true` for success. Otherwise returns `pos` and `false`.
+  - The node returned is an **AIR NODE** two blocks above the original position.
   - `radius` is a number. Must be less than or equal to 79 to stop an overflow.
 - `herobrine.stalk_player(pname, pos)` - Spawns `herobrine:herobrine_stalker` at `pos` facing `pname`.

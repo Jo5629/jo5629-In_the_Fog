@@ -17,7 +17,7 @@ herobrine_settings.setting_formspec = flow.make_gui(function(player, ctx)
             default = tostring(default)
         end
 
-        local label = string.format("%s - %s", minetest.colorize("#BFFF00", name), def.description)
+        local label = string.format("%s - %s", minetest.colorize("#16FF16", name), def.description)
         if type == "boolean" then
             table.insert(vbox, gui.Checkbox{name = name, label = label,})
         else
@@ -46,7 +46,7 @@ herobrine_settings.setting_formspec = flow.make_gui(function(player, ctx)
                 end
                 local success = herobrine_settings.save_settings()
                 if success then
-                    minetest.chat_send_player(pname, minetest.colorize("#BFFF00", "Successfully saved to config file."))
+                    minetest.chat_send_player(pname, minetest.colorize("#16FF16", "Successfully saved to config file."))
                     minetest.chat_send_player(pname, minetest.colorize("#FF0000", "Some changes may require a restart to be fully activated."))
                 else
                     minetest.chat_send_player(pname, "Was not able to save to config file.")

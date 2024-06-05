@@ -104,7 +104,7 @@ herobrine_settings.register_setting("jumpscare_chance", {
 herobrine_settings.register_setting("jumpscare_volume", {
     type = "number",
     description = "How loud the jumpscare sound is. Number is divided by 100.",
-    value = 60,
+    value = 80,
 })
 
 herobrine_settings.register_setting("shrine_interval", {
@@ -129,7 +129,7 @@ herobrine_settings.register_setting("ambience_chance", {
 herobrine_settings.register_setting("ambience_volume", {
     type = "number",
     description = "How loud the ambience sounds will play. Number is divided by 100.",
-    value = 25,
+    value = 10,
 })
 
 herobrine_settings.register_setting("convert_stalker", {
@@ -142,5 +142,17 @@ herobrine_settings.register_setting("convert_stalker", {
 herobrine_settings.register_setting("signs_spawnable_on", {
     type = "table",
     description = "Node that random signs can spawn on",
-    value = {"group:soil", "group:stone", "group:sand", "group:grass"},
+    value = {"group:soil", "group:stone", "group:sand"},
+})
+
+herobrine_settings.register_setting("signs_spawn_interval", {
+    type = "number",
+    description = "How long until a sign can randomly spawn (in seconds)",
+    value = 1200,
+})
+
+herobrine_settings.register_setting("signs_spawn_chance", {
+    type = "number",
+    description = "The chance of a random sign to spawn. (Out of 100)",
+    value = 20,
 })

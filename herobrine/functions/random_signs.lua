@@ -6,12 +6,8 @@ end
 herobrine.signs = {}
 
 local words_table = {
-    ["en"] = {
-        "I am watching you...",
-        "On your six!",
-    },
+    ["en"] = {},
 }
-words_table["default"] = words_table["en"]
 
 function herobrine.signs.register_text(lang_table, text_table)
     for _, lang in pairs(lang_table) do
@@ -21,18 +17,23 @@ function herobrine.signs.register_text(lang_table, text_table)
     end
 end
 
+herobrine.signs.register_text({"en"}, {
+        "I am watching you...",
+        "On your six!",
+})
+
 function herobrine.signs.get_full_lang_table()
     return words_table
 end
 
 function herobrine.signs.get_lang_table(lang)
-    if not lang then lang = "default" end
+    if not lang then lang = "en" end
     return words_table[lang]
 end
 
 function herobrine.signs.generate_random_text(lang)
     if not words_table[lang] or not lang then
-        lang = "default"
+        lang = "en"
     end
     return words_table[lang][math.random(1, #words_table[lang])], true
 end
@@ -50,6 +51,10 @@ function herobrine.signs.find_position_near(pos, radius)
     local newpos = pos
     for _, node_pos in pairs(nodes) do
         local temp_pos = {x = node_pos.x, y = node_pos.y + 2, z = node_pos.z}
+        local node_light = minetest.get_node_light(temp_pos, 0.5)
+        if not node_light or node_light < 9 then
+            return
+        end
         if minetest.get_node(temp_pos).name == "air"  then
             newpos = node_pos
             found = true
@@ -66,7 +71,8 @@ end
 
 local sign_node = "default:sign_wall_wood" --> Use this so that signs_lib is not usually needed.
 function herobrine.signs.place_sign(pos, text)
-    minetest.set_node(pos, {name = sign_node, param2 = 1})
+    minetest.add_node(pos, {name = sign_node, param2 = 1,})
+    minetest.log("action", string.format("[In the Fog] Placed a sign at %s with text: %s.", minetest.pos_to_string(pos, 1), text))
     if signs_lib_enabled then
         signs_lib.update_sign(pos, {text = text})
         return true
@@ -76,6 +82,7 @@ function herobrine.signs.place_sign(pos, text)
         meta:set_string("text", text) --> Hope to still be viewed after sign_lib is enabled.
         return true
     end
+    return false
 end
 
 local function place_random_sign(pname, target, range, waypoint)
@@ -91,7 +98,7 @@ local function place_random_sign(pname, target, range, waypoint)
     if not found then
         return "Was not able to find an eligible node."
     end
-    herobrine.signs.place_sign(pos, herobrine.signs.generate_random_text())
+    local success = herobrine.signs.place_sign(pos, herobrine.signs.generate_random_text())
     if waypoint == "true" then
         local id = playerobj:hud_add({
             hud_elem_type = "waypoint",
@@ -104,7 +111,9 @@ local function place_random_sign(pname, target, range, waypoint)
             playerobj:hud_remove(id)
         end)
     end
-    return true, string.format("Placed a sign at %s.", minetest.pos_to_string(pos, 1))
+    if success then
+        return true, string.format("Placed a sign at %s.", minetest.pos_to_string(pos, 1))
+    end
 end
 
 herobrine.register_subcommand("place_random_sign :target :num :waypoint", {
@@ -114,3 +123,15 @@ herobrine.register_subcommand("place_random_sign :target :num :waypoint", {
         return place_random_sign(name, target, tonumber(num), waypoint)
     end
 })
+
+--> Make it normal in the world.
+local interval = herobrine_settings.get_setting("signs_spawn_interval")
+local chance = herobrine_settings.get_setting("signs_spawn_chance")
+local timer = 0
+minetest.register_globalstep(function(dtime)
+    timer = timer + dtime
+    if timer >= interval and math.random(1, 100) <= chance then
+        local players = minetest.get_connected_players()
+        herobrine.signs.place_sign(players[math.random(1, #players)], herobrine.signs.generate_random_text())
+    end
+end)
