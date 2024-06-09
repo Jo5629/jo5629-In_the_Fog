@@ -3,7 +3,7 @@ herobrine.commands_list = {}
 herobrine.commands.default_privs = {server = true, interact = true, shout = true, herobrine_admin = true}
 
 local cmd = chatcmdbuilder.register("herobrine", {
-    description = "Command used for the In the Fog mod. Do /herobrine help to get started.",
+    description = "Command used for the In the Fog mod. Do /herobrine help to get started. Do /herobrine help true for the formspec version.",
     privs = {
         interact = true
     }
