@@ -9,7 +9,10 @@ herobrine_settings.setting_formspec = flow.make_gui(function(player, ctx)
     local vbox = {name = "vbox1", h = 15, w = 15, spacing = 0.5}
     for _, name in pairs(herobrine_settings.get_settings_list()) do
         local def = herobrine_settings.get_setting_def(name)
-        local default = herobrine_settings.get_setting(name) or def.value
+        local default = herobrine_settings.get_setting(name)
+        if default == nil then
+            default = def.value
+        end
         local type = def.type
         if type == "table" then
             default = minetest.serialize(default)
@@ -20,6 +23,7 @@ herobrine_settings.setting_formspec = flow.make_gui(function(player, ctx)
         local label = string.format("%s - %s", minetest.colorize("#16FF16", name), def.description)
         if type == "boolean" then
             table.insert(vbox, gui.Checkbox{name = name, label = label,})
+            ctx.form[name] = herobrine_settings.convert_value(tostring(default), "boolean")
         else
             table.insert(vbox, gui.Field{name = name, label = label, default = default, h = 1.3})
         end
@@ -33,7 +37,7 @@ herobrine_settings.setting_formspec = flow.make_gui(function(player, ctx)
                 local pname = player:get_player_name()
                 for _, name in pairs(herobrine_settings.get_settings_list()) do
                     local def = herobrine_settings.get_setting_def(name)
-                    local value = herobrine_settings.convert_value(ctx.form[name], def.type) or def.value
+                    local value = herobrine_settings.convert_value(tostring(ctx.form[name]), def.type)
                     local success = herobrine_settings.set_setting(name, value)
                     if not success then
                         minetest.chat_send_player(pname, minetest.colorize("#FFFF00", string.format("Was not able to override setting %s, defaulting to old value.", name)))

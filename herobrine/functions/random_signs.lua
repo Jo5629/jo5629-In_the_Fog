@@ -127,10 +127,11 @@ herobrine.register_subcommand("place_random_sign :target :num :waypoint", {
 --> Make it normal in the world.
 local interval = herobrine_settings.get_setting("signs_spawn_interval")
 local chance = herobrine_settings.get_setting("signs_spawn_chance")
+local enabled = herobrine_settings.get_setting("signs_enabled")
 local timer = 0
 minetest.register_globalstep(function(dtime)
     timer = timer + dtime
-    if timer >= interval and math.random(1, 100) <= chance then
+    if enabled and timer >= interval and math.random(1, 100) <= chance then
         local players = minetest.get_connected_players()
         herobrine.signs.place_sign(players[math.random(1, #players)], herobrine.signs.generate_random_text())
     end

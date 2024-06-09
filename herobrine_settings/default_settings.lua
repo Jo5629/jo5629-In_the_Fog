@@ -139,6 +139,12 @@ herobrine_settings.register_setting("convert_stalker", {
     max = 100,
 })
 
+herobrine_settings.register_setting("signs_enabled", {
+    type = "boolean",
+    description = "Enable/Disable signs randomly generated in your world.",
+    value = true,
+})
+
 herobrine_settings.register_setting("signs_spawnable_on", {
     type = "table",
     description = "Node that random signs can spawn on",
@@ -156,3 +162,4 @@ herobrine_settings.register_setting("signs_spawn_chance", {
     description = "The chance of a random sign to spawn. (Out of 100)",
     value = 20,
 })
+
