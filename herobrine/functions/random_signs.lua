@@ -132,7 +132,17 @@ local timer = 0
 minetest.register_globalstep(function(dtime)
     timer = timer + dtime
     if enabled and timer >= interval and math.random(1, 100) <= chance then
-        local players = minetest.get_connected_players()
-        herobrine.signs.place_sign(players[math.random(1, #players)], herobrine.signs.generate_random_text())
+        local players = {}
+        for _, playerobj in pairs(minetest.get_connected_players()) do
+            table.insert(players, playerobj:get_player_name())
+        end
+        local randpname = players[math.random(1, #players)]
+        local randpobj = minetest.get_player_by_name(randpname)
+        if randpobj then
+            local pos, found = herobrine.signs.find_position_near(randpobj:get_pos())
+            if found then
+                herobrine.signs.place_sign(pos, herobrine.signs.generate_random_text())
+            end
+        end
     end
 end)
