@@ -144,5 +144,6 @@ minetest.register_globalstep(function(dtime)
                 herobrine.signs.place_sign(pos, herobrine.signs.generate_random_text())
             end
         end
+        timer = 0
     end
 end)
