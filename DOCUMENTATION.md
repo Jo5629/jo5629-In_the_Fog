@@ -1,5 +1,18 @@
 # In the Fog API Documentation
 
+## Table of Contents
+
+- [Herobrine Settings API](#herobrine-settings-api)
+  - [herobrine_settings.register_setting(name, def)](#herobrine_settingsregister_settingname-def)
+  - [Setting Example](#setting-example)
+  - [More Settings API Functions](#more-settings-api-functions)
+- [Herobrine Ambience API](#herobrine-ambience-api)
+- [Herobrine Signs API](#herobrine-signs-api)
+  - [Sign Example](#sign-example)
+- [Miscellaneous API Functions](#miscellaneous-api-functions)
+  - [Command Example](#command-example)
+- [In the Fog API Variables](#in-the-fog-api-variables)
+
 ## Herobrine Settings API
 
 ### `herobrine_settings.register_setting(name, def)`
@@ -15,7 +28,7 @@ Returns `true` for success and `false` for failure.
    2. `description` = Description of the setting. Defaults to `""`
    3. `value`= Initial value to be registered. The value has to be equal to the type, otherwise it will not be registered.
 
-**EXAMPLE:**
+### Setting Example
 
 ``` lua
 herobrine_settings.register_setting("stalking_timer", {
@@ -50,16 +63,6 @@ herobrine_settings.register_setting("stalking_timer", {
 ## Herobrine Signs API
 
 - `herobrine.signs.register_text(lang_table, text_table)` - Registers all the strings in `text_table` into every single language in `lang_table`.
-
-**EXAMPLE:**
-
-``` lua
-herobrine.signs.register_text({"en"}, {
-  "I am watching you...",
-  "On your six!",
-})
-```
-
 - `herobrine.signs.get_full_lang_table()` - Returns all of the languages in a key-value table.
 - `herobrine.signs.get_lang_table(lang)` - Returns all the text values in a specific language, `lang`. Returns `nil` if language not found.
 - `herobrine.signs.generate_random_text(lang)` - Returns a random string from a specific language.
@@ -68,6 +71,15 @@ herobrine.signs.register_text({"en"}, {
   - Returns an **AIR NODE** that is **ONE BLOCK** above the original position.
 - `herobrine.signs.place_sign(pos, text)` - Places a sign at `pos` with `text` as a string on it.
   - Supports `sign_lib`.
+
+### Sign Example
+
+``` lua
+herobrine.signs.register_text({"en"}, {
+  "I am watching you...",
+  "On your six!",
+})
+```
 
 ## Miscellaneous API Functions
 
@@ -84,7 +96,7 @@ herobrine.signs.register_text({"en"}, {
   1. `name` and `def` are both the equivalent to `name` and `def` from lib_chatcmdbuilder.
   2. `hidden` - This is put in the definition so it will be hidden from the command `/herobrine help`.
 
-**EXAMPLE:**
+### Command Example
 
 ``` lua
 herobrine.register_subcommand("save_settings", {
