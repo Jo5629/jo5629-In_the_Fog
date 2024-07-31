@@ -1,18 +1,5 @@
 # In the Fog API Documentation
 
-## Table of Contents
-
-- [Herobrine Settings API](#herobrine-settings-api)
-  - [herobrine_settings.register_setting(name, def)](#herobrine_settingsregister_settingname-def)
-  - [Setting Example](#setting-example)
-  - [More Settings API Functions](#more-settings-api-functions)
-- [Herobrine Ambience API](#herobrine-ambience-api)
-- [Herobrine Signs API](#herobrine-signs-api)
-  - [Sign Example](#sign-example)
-- [Miscellaneous API Functions](#miscellaneous-api-functions)
-  - [Command Example](#command-example)
-- [In the Fog API Variables](#in-the-fog-api-variables)
-
 ## Herobrine Settings API
 
 ### `herobrine_settings.register_setting(name, def)`
@@ -49,6 +36,11 @@ herobrine_settings.register_setting("stalking_timer", {
   - Might replaced for better functionality.
 - `herobrine_settings.load_settings()` - Loads all of the settings in `herobrine_settings.conf` in your worldpath to `herobrine_settings`.
 - `herobrine_settings.save_settings()` - Saves `herobrine_settings` to `herobrine_settings.conf`.
+- `herobrine_settings.nearest_value(tbl, number)`  - Returns `index, val`.
+  - Calculates the closest index to `number` in `tbl`.
+  - `tbl` should be an array.
+  - `index` is an numerical index from an array.
+  - `val` is the value found using `tbl[index]`.
 
 ## Herobrine Ambience API
 
@@ -93,12 +85,18 @@ herobrine.signs.register_text({"en"}, {
   3. `sound` - If `true`, a sound will go off when a player has been jumpscared.
 - `herobrine.line_of_sight(pos1, pos2)` - Returns `boolean, pos`
   - Checks if there are any **opaque** blocks between `pos1` and `pos2`.
-  - Returns false if unsuccessful
+  - Returns false if unsuccessful.
   - Returns the position of the blocking node when `false`.
 - `herobrine.lighting_strike(pos)` - Spawns a lightning strike at `pos`, only if the mod `lightning` by sofar is enabled.
 - `herobrine.register_subcommand(name, def)` - Registers a subcommand under the `herobrine` command.
   1. `name` and `def` are both the equivalent to `name` and `def` from lib_chatcmdbuilder.
   2. `hidden` - This is put in the definition so it will be hidden from the command `/herobrine help`.
+- `herobrine.get_daycount()` - Returns a number.
+  - The number returned might not always line up with what is returned from `minetest.get_day_count()`.
+  - Used for internal calculations within the mod.
+- `herobrine.set_daycount(num)`
+  - Sets the daycount.
+  - `num` is a number.
 
 ### Command Example
 
@@ -116,6 +114,12 @@ herobrine.register_subcommand("save_settings", {
   end,
 })
 ```
+
+## Registration Functions
+
+- `herobrine.register_on_day_change(function(daycount))`
+  - Called when the internal daycount has changed.
+  - `daycount` is a number.
 
 ## In the Fog API Variables
 
