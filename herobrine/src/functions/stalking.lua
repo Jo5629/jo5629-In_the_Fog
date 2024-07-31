@@ -1,3 +1,26 @@
+function herobrine.line_of_sight(pos1, pos2)
+    local success, pos = true, nil
+    local ray = minetest.raycast(pos1, pos2)
+    for pointed_thing in ray do
+        if pointed_thing.type ~= "node" then
+            return
+        end
+
+        local glass_drawtypes = {
+            ["glasslike"] = true,
+            ["glasslike_framed"] = true,
+            ["glasslike_framed_optional"] = true,
+        }
+        local def = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+        if not (glass_drawtypes[def.drawtype]) then
+            success, pos = false, pointed_thing.under
+            break
+        end
+    end
+
+    return success, pos
+end
+
 function herobrine.find_position_near(pos, radius)
     if not radius or radius > 70 then --> As long as the radius is <= 79 we will be okay. Lower the bar a little more too be safe.
         radius = math.random(40, 60)
@@ -13,7 +36,7 @@ function herobrine.find_position_near(pos, radius)
     local newpos = pos
     for _, node_pos in pairs(nodes) do
         local temp_pos = {x = node_pos.x, y = node_pos.y + 2, z = node_pos.z}
-        if vector.distance(pos, node_pos) > min and minetest.line_of_sight(pos, temp_pos) and minetest.get_node(temp_pos).name == "air"  then
+        if vector.distance(pos, node_pos) > min and herobrine.line_of_sight(pos, temp_pos) and minetest.get_node(temp_pos).name == "air"  then
             newpos = node_pos
             found = true
             break
@@ -38,12 +61,14 @@ function herobrine.stalk_player(pname, pos)
     minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. pname .. ".")
 end
 
-local max_time = herobrine_settings.get_setting("stalking_timer")
 local timer = 0
-local chance = herobrine_settings.get_setting("stalking_chance")
+local chance = 0
 minetest.register_globalstep(function(dtime)
+    local stalking_chance_def = herobrine_settings.get_setting("stalking_chance")
+    chance = stalking_chance_def.vals[herobrine_settings.nearest_value(stalking_chance_def.days, herobrine.get_daycount())]
+
     local temp_chance = chance
-    if minetest.get_day_count() < herobrine_settings.get_setting("stalking_days") then
+    if herobrine.get_daycount() < herobrine_settings.get_setting("stalking_days") then
         timer = 0
         return
     end
@@ -52,7 +77,7 @@ minetest.register_globalstep(function(dtime)
     if (minetest.get_timeofday() * 24) >= 20 and chance ~= 0 then --> Try some weighted chance.
         temp_chance = chance + 25
     end
-    if timer >= max_time and math.random(1, 100) <= temp_chance then
+    if timer >= herobrine_settings.get_setting("stalking_timer") and math.random(1, 100) <= temp_chance then
         local players = minetest.get_connected_players()
         local player = players[math.random(1, #players)]
         local name = player:get_player_name()

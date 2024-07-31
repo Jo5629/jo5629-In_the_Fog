@@ -2,7 +2,7 @@
 
 herobrine_settings.register_setting("spawnable_on", {
     type = "table",
-    description = "Node that Stalking Herobrine can spawn on",
+    description = "Node list that Stalking Herobrine can spawn on",
     value = {"group:soil", "group:stone", "group:sand", "group:grass"},
 })
 
@@ -21,7 +21,7 @@ herobrine_settings.register_setting("despawn_radius", {
 herobrine_settings.register_setting("stalking_days", {
     type = "number",
     description = "How much in-game days it takes until Herobrine starts stalking players.",
-    value = 3,
+    value = 1,
 })
 
 herobrine_settings.register_setting("stalking_timer", {
@@ -31,10 +31,12 @@ herobrine_settings.register_setting("stalking_timer", {
 })
 
 herobrine_settings.register_setting("stalking_chance", {
-    type = "number",
-    description = "The chance for Herobrine to stalk a player. Calculated by value/100",
-    value = 50,
-    max = 100,
+    type = "table",
+    description = "The chance for Herobrine to stalk a player.",
+    value = {
+        days = {1, 3, 5, 8, 10},
+        vals = {0, 10, 30, 30, 40},
+    },
 })
 
 herobrine_settings.register_setting("random_door_opening", {
@@ -71,8 +73,8 @@ herobrine_settings.register_setting("game_crash_chance", {
 
 herobrine_settings.register_setting("footsteps_chance", {
     type = "number",
-    description = "The chance of footsteps randomly playing.",
-    value = 20,
+    description = "The chance of Footsteps Herobrine spawning.",
+    value = 60,
     max = 100,
 })
 

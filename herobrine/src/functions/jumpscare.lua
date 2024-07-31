@@ -9,6 +9,7 @@ function herobrine.jumpscare_player(player, duration, sound)
         position = {x = 0.5, y = 0.5},
         scale = {x = 80, y = 80},
         text = "herobrine_jumpscare.png",
+        z_index = 1000,
     })
 
     minetest.after(duration, function()

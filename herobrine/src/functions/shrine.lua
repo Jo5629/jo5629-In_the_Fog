@@ -15,6 +15,7 @@ minetest.register_node("herobrine:shrine_node", {
     is_ground_content = false,
     groups = {cracky = 3},
     sounds = default.node_sound_stone_defaults(),
+    --[[
     on_ignite = function(pos, igniter)
         local time_left = minetest.get_gametime() - old_time
         if not (time_left >= interval) then
@@ -43,6 +44,7 @@ minetest.register_node("herobrine:shrine_node", {
             storage:set_int("herobrine:shrine_gametime", old_time)
         end
     end
+    ]]
 })
 
 minetest.register_craft({

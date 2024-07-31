@@ -63,7 +63,8 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 		minetest.after(2, function()
 			herobrine.lightning_strike(hitter:get_pos())
 			mobs:remove(luaentity)
-			minetest.chat_send_all("<Herobrine> I will return.")
+			minetest.chat_send_all(minetest.format_chat_message("Herobrine", "I will return."))
+			herobrine.set_daycount(0)
 		end)
 	end
 end)

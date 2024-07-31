@@ -32,6 +32,17 @@ function herobrine_settings.convert_value(val, to_type)
     end
 end
 
+function herobrine_settings.nearest_value(tbl, number) --> https://stackoverflow.com/questions/29987249/find-the-nearest-value.
+    local smallestSoFar, smallestIndex
+    for i, y in ipairs(tbl) do
+        if not smallestSoFar or (math.abs(number-y) < smallestSoFar) then
+            smallestSoFar = math.abs(number-y)
+            smallestIndex = i
+        end
+    end
+    return smallestIndex, tbl[smallestIndex]
+end
+
 function herobrine_settings.get_setting(name)
     return herobrine_settings.settings[name]
 end

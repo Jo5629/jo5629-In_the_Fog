@@ -21,6 +21,10 @@ herobrine_settings.setting_formspec = flow.make_gui(function(player, ctx)
         end
 
         local label = string.format("%s - %s", minetest.colorize("#16FF16", name), def.description)
+        if def.hidden then
+            return
+        end
+
         if type == "boolean" then
             table.insert(vbox, gui.Checkbox{name = name, label = label,})
             ctx.form[name] = herobrine_settings.convert_value(tostring(default), "boolean")

@@ -91,6 +91,10 @@ herobrine.signs.register_text({"en"}, {
   1. `player` is an `ObjectRef`
   2. `duration` - How long the jumpscare photo will be shown on the player's screen.
   3. `sound` - If `true`, a sound will go off when a player has been jumpscared.
+- `herobrine.line_of_sight(pos1, pos2)` - Returns `boolean, pos`
+  - Checks if there are any **opaque** blocks between `pos1` and `pos2`.
+  - Returns false if unsuccessful
+  - Returns the position of the blocking node when `false`.
 - `herobrine.lighting_strike(pos)` - Spawns a lightning strike at `pos`, only if the mod `lightning` by sofar is enabled.
 - `herobrine.register_subcommand(name, def)` - Registers a subcommand under the `herobrine` command.
   1. `name` and `def` are both the equivalent to `name` and `def` from lib_chatcmdbuilder.
