@@ -1,6 +1,6 @@
 function herobrine.line_of_sight(pos1, pos2)
     local success, pos = true, nil
-    local ray = minetest.raycast(pos1, pos2)
+    local ray = minetest.raycast(pos1, pos2, false)
     for pointed_thing in ray do
         if pointed_thing.type ~= "node" then
             return
@@ -28,8 +28,8 @@ function herobrine.find_position_near(pos, radius)
     local min = herobrine_settings.get_setting("despawn_radius") + 10
     local outside = minetest.get_node_light(pos, 0.5) == 15
     if not outside then min = herobrine_settings.get_setting("despawn_radius") + 5 end
-    local pos1 = {x = pos.x - radius, y = pos.y - radius, z = pos.z - radius}
-    local pos2 = {x = pos.x + radius, y = pos.y + radius, z = pos.z + radius}
+    local pos1 = vector.add(pos, radius)
+    local pos2 = vector.subtract(pos, radius)
     local nodes = minetest.find_nodes_in_area_under_air(pos1, pos2, herobrine_settings.get_setting("spawnable_on"))
     table.shuffle(nodes)
     local found = false
@@ -64,11 +64,10 @@ end
 local timer = 0
 local chance = 0
 minetest.register_globalstep(function(dtime)
-    local stalking_chance_def = herobrine_settings.get_setting("stalking_chance")
-    chance = stalking_chance_def.vals[herobrine_settings.nearest_value(stalking_chance_def.days, herobrine.get_daycount())]
+    chance = herobrine_settings.get_setting_val_from_day_count("stalking_chance", herobrine.get_day_count())
 
     local temp_chance = chance
-    if herobrine.get_daycount() < herobrine_settings.get_setting("stalking_days") then
+    if herobrine.get_day_count() < herobrine_settings.get_setting("stalking_days") then
         timer = 0
         return
     end

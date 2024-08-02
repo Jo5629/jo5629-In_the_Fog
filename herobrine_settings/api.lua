@@ -1,7 +1,7 @@
 --> Save the settings on a world-to-world basis.
 local types = {["table"] = true, ["boolean"] = true, ["string"] = true, ["number"] = true}
 
-function herobrine_settings.register_setting(name, def)
+function herobrine_settings.register_setting(name, def, hidden)
     if def.type ~= type(def.value) or not types[def.type]  then
         minetest.log("error", string.format("[In the Fog] Was not able to register: %s", name))
         return false
@@ -9,8 +9,10 @@ function herobrine_settings.register_setting(name, def)
     if def.description == nil then def.description = "Not defined." end
 
     herobrine_settings.settings_defs[name] = def
-    table.insert(herobrine_settings.settings_list, name)
     herobrine_settings.set_setting(name, def.value)
+    if not hidden then
+        table.insert(herobrine_settings.settings_list, name)
+    end
     minetest.log("action", string.format("[In the Fog] Registered setting: %s", name))
     return true
 end
@@ -109,6 +111,16 @@ function herobrine_settings.load_settings()
         end
     end
     return true
+end
+
+function herobrine_settings.get_setting_val_from_day_count(name, days)
+    local def = herobrine_settings.get_setting_def(name)
+    if not def or def.type ~= "table" then
+        return 0, false
+    end
+
+    local tbl = def.value
+    return tbl.vals[herobrine_settings.nearest_value(tbl.days, days)], true
 end
 
 minetest.register_on_shutdown(function()

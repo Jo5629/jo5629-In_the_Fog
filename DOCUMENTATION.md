@@ -2,20 +2,23 @@
 
 ## Herobrine Settings API
 
-### `herobrine_settings.register_setting(name, def)`
+### `herobrine_settings.register_setting(name, def, hidden)`
 
 Returns `true` for success and `false` for failure.
 
-1. `name` is a string.
-2. `def` includes:
-   1. `type` = Could be `"table", "boolean", "string", "number"`
-      1. Some extra things about the `number` type.
-         1. `min` = Smallest value the number can be. Defaults to `0`.
-         2. `max` = Largest value the number can be. Defaults to `65536`.
-   2. `description` = Description of the setting. Defaults to `""`
-   3. `value`= Initial value to be registered. The value has to be equal to the type, otherwise it will not be registered.
+- `name` is a string.
+- `def` includes:
+  - `type` = Could be `"table", "boolean", "string", "number"`
+    - Some extra things about the `number` type.
+      - `min` = Smallest value the number can be. Defaults to `0`.
+      - `max` = Largest value the number can be. Defaults to `65536`.
+  - `description` = Description of the setting. Defaults to `""`
+  - `value`= Initial value to be registered. The value has to be equal to the type, otherwise it will not be registered.
+- `hidden` is a boolean.
+  - If true, the setting will not show up in `/herobrine settings`.
+  - Default value is false.
 
-### Setting Example
+**EXAMPLE:**
 
 ``` lua
 herobrine_settings.register_setting("stalking_timer", {
@@ -41,11 +44,16 @@ herobrine_settings.register_setting("stalking_timer", {
   - `tbl` should be an array.
   - `index` is an numerical index from an array.
   - `val` is the value found using `tbl[index]`.
+- `herobrine_settings.get_setting_val_from_day_count(name, days)` - Returns `val, success`
+  - `name` is a string, but must be a valid setting name, whether hidden or not.
+  - `days` is a number.
+  - `val` could be `"table", "string", "boolean", "number"`.
+  - `success` is a boolean. `true` for success and `false` for failure.
 
 ## Herobrine Ambience API
 
 - `herobrine_ambience.register_sound(name)` - Registers a sound name. Returns `true` for success.
-- `herobrine_ambience.unregister_sound(name)` - Unregistered a sound. Returns `true` for success and `false` for failure.
+- `herobrine_ambience.unregister_sound(name)` - Unregisters a sound. Returns `true` for success and `false` for failure.
 - `herobrine_ambience.get_ambience_list()` - Get all the registered sounds.
 - `herobrine_ambience.get_random_sound()` - Gets a random sound from the registered list.
 - `herobrine_ambience.play_sound(sound_name, duration)` - Plays sound `sound_name` for `duration` seconds. Returns `sound` and `job`, respectively.
@@ -64,7 +72,7 @@ herobrine_settings.register_setting("stalking_timer", {
 - `herobrine.signs.place_sign(pos, text)` - Places a sign at `pos` with `text` as a string on it.
   - Supports `sign_lib`.
 
-### Sign Example
+**EXAMPLE:**
 
 ``` lua
 herobrine.signs.register_text({"en"}, {
@@ -80,25 +88,28 @@ herobrine.signs.register_text({"en"}, {
   - The node returned is an **AIR NODE** that is **TWO BLOCKS** above the original position.
   - `radius` is a number. Must be less than or equal to 79 to stop an overflow.
 - `herobrine.jumpscare_player(player, duration, sound)` - Jumpscares a player.
-  1. `player` is an `ObjectRef`
-  2. `duration` - How long the jumpscare photo will be shown on the player's screen.
-  3. `sound` - If `true`, a sound will go off when a player has been jumpscared.
+  - `player` is an `ObjectRef`
+  - `duration` - How long the jumpscare photo will be shown on the player's screen.
+  - `sound` - If `true`, a sound will go off when a player has been jumpscared.
 - `herobrine.line_of_sight(pos1, pos2)` - Returns `boolean, pos`
   - Checks if there are any **opaque** blocks between `pos1` and `pos2`.
   - Returns false if unsuccessful.
   - Returns the position of the blocking node when `false`.
 - `herobrine.lighting_strike(pos)` - Spawns a lightning strike at `pos`, only if the mod `lightning` by sofar is enabled.
-- `herobrine.register_subcommand(name, def)` - Registers a subcommand under the `herobrine` command.
-  1. `name` and `def` are both the equivalent to `name` and `def` from lib_chatcmdbuilder.
-  2. `hidden` - This is put in the definition so it will be hidden from the command `/herobrine help`.
-- `herobrine.get_daycount()` - Returns a number.
-  - The number returned might not always line up with what is returned from `minetest.get_day_count()`.
+- `herobrine.get_day_count()` - Returns a number.
+  - Independent from what is returned in `minetest.get_day_count()`.
   - Used for internal calculations within the mod.
-- `herobrine.set_daycount(num)`
+- `herobrine.set_day_count(num)`
   - Sets the daycount.
   - `num` is a number.
 
-### Command Example
+### Subcommands
+
+- `herobrine.register_subcommand(name, def, hidden)` - Registers a subcommand under the `herobrine` command.
+  - `name` and `def` are both the equivalent to `name` and `def` from [lib_chatcmdbuilder](https://content.minetest.net/packages/rubenwardy/lib_chatcmdbuilder/).
+  - `hidden` is a boolean. If set to true, the command will not be shown when `/herobrine help` is executed. Default is false.
+
+**EXAMPLE:**
 
 ``` lua
 herobrine.register_subcommand("save_settings", {
@@ -115,10 +126,12 @@ herobrine.register_subcommand("save_settings", {
 })
 ```
 
+The command can then be accessed using `/herobrine save_settings`.
+
 ## Registration Functions
 
 - `herobrine.register_on_day_change(function(daycount))`
-  - Called when the internal daycount has changed.
+  - Called when the **internal** daycount has changed.
   - `daycount` is a number.
 
 ## In the Fog API Variables
@@ -126,5 +139,5 @@ herobrine.register_subcommand("save_settings", {
 - `herobrine.commands.default_privs` - Returns a table with the default privileges.
   - Can be used in both `minetest.register_subcommand` and `herobrine.register_subcommand`.
   - `server, interact, shout, herobrine_admin` are the default privileges.
-- `herobrine_settings.conf_modpath` - Return a filepath used in order to help store herobrine_settings.conf.
+- `herobrine_settings.conf_modpath` - Returns a filepath used in order to help store herobrine_settings.conf.
   - Defaults to what is returned from `minetest.get_worldpath()`.

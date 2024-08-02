@@ -60,11 +60,11 @@ local def = {
 mobs:register_mob("herobrine:herobrine_footsteps", def)
 mobs:register_egg("herobrine:herobrine_footsteps", "Spawn Footsteps Herobrine", "herobrine_spawn_egg.png", 0, false)
 
-local chance = herobrine_settings.get_setting("footsteps_chance")
-local interval = herobrine_settings.get_setting("footsteps_interval")
-
 local timer = 0
 minetest.register_globalstep(function(dtime)
+	local chance = herobrine_settings.get_setting_val_from_day_count("footsteps_chance", herobrine.get_day_count())
+	local interval = herobrine_settings.get_setting("footsteps_interval")
+
 	timer = timer + dtime
 	if timer >= interval and math.random(1, 100) <= chance then
 		local players = minetest.get_connected_players()

@@ -9,11 +9,16 @@ local cmd = chatcmdbuilder.register("herobrine", {
     }
 })
 
-function herobrine.register_subcommand(name, def)
+function herobrine.register_subcommand(name, def, hidden)
     if def.description == nil then
-        def.description = "Not defined."
+        def.description = "Undefined."
     end
     herobrine.commands[name] = def
+
+    if def.hidden == nil then
+        def.hidden = hidden or false
+    end
+
     if not def.hidden then --> Not be shown during /herobrine help
         table.insert(herobrine.commands_list, name)
     end

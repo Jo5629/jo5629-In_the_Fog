@@ -1,21 +1,25 @@
 [![ContentDB](https://content.minetest.net/packages/J05629/in_the_fog/shields/downloads/)](https://content.minetest.net/packages/J05629/in_the_fog/)
 
 # In the Fog
+
 *Herobrine* has entered Minetest. **BEWARE and TREAD LIGHTLY.**
 
-## **WARNINGS:**
+## WARNINGS
+
 - Bugs and crashes should be expected.
+  - This is why using the latest commit from the repository in your world is not recommended. Please use the stable versions in the releases.
 - This mod is more focused towards singleplayer.
-	- Multiplayer is functional, but bugs not found in singleplayer testing might appear in multiplayer.
+  - Multiplayer is functional, but bugs not found in singleplayer testing might appear in multiplayer.
 - Parts of the mod are able to crash your game **AT RANDOM.**
 - Parts of the mod are also able to cause permanent damage to your world.
 
-## **HELP:**
+## HELP
+
 - `/herobrine help`: Shows  a list of commands within the mod. Some may be hidden from view.
-	- `herobrine_admin`: A privilege needed to execute special commands.
+  - `herobrine_admin`: A privilege needed to execute special commands.
 - `/herobrine settings`: Shows a formspec with all of the registered settings and their values.
-	- You need `herobrine_admin` in order to update those settings and experience their effect.
-	- Some changes may require you to restart the server.
+  - You need `herobrine_admin` in order to update those settings and experience their effect.
+  - Some changes may require you to restart the server.
 
 [In the Fog API Documentation](https://github.com/Jo5629/jo5629-In_the_Fog/blob/main/DOCUMENTATION.md)
 

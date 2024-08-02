@@ -38,11 +38,11 @@ end
 herobrine_ambience.register_sound("herobrine_ambience1")
 herobrine_ambience.register_sound("herobrine_ambience2")
 
-local chance = herobrine_settings.get_setting("ambience_chance")
-local interval = herobrine_settings.get_setting("ambience_interval")
-
 local timer = 0
 minetest.register_globalstep(function(dtime)
+    local chance = herobrine_settings.get_setting_val_from_day_count("ambience_chance", herobrine.get_day_count())
+    local interval = herobrine_settings.get_setting("ambience_interval")
+
     timer = timer + dtime
     if timer >= interval then
         if math.random(1, 100) <= chance then
