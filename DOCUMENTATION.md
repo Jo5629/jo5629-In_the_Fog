@@ -45,10 +45,29 @@ herobrine_settings.register_setting("stalking_timer", {
   - `index` is an numerical index from an array.
   - `val` is the value found using `tbl[index]`.
 - `herobrine_settings.get_setting_val_from_day_count(name, days)` - Returns `val, success`
+  - Calculated the output from a specific setting.
   - `name` is a string, but must be a valid setting name, whether hidden or not.
   - `days` is a number.
   - `val` could be `"table", "string", "boolean", "number"`.
   - `success` is a boolean. `true` for success and `false` for failure.
+  - This function is super specific. See example below.
+
+**EXAMPLE:**
+
+``` lua
+herobrine_settings.register_setting("ambience_chance", {
+    type = "table",
+    description = "The chance of a random sound playing.",
+    value = {
+        days = {0, 2, 5, 10},
+        vals = {0, 10, 15, 20}
+    }
+}, true)
+
+local chance, success = herobrine_settings.get_setting_val_from_day_count("ambience_chance", 3) --> 3 is closest to 2, so it will return whatever the second index is in the vals table.
+print(chance) --> 10
+print(success) --> true
+```
 
 ## Herobrine Ambience API
 
@@ -133,6 +152,10 @@ The command can then be accessed using `/herobrine save_settings`.
 - `herobrine.register_on_day_change(function(daycount))`
   - Called when the **internal** daycount has changed.
   - `daycount` is a number.
+- `herobrine.register_on_spawn(function(name, pos))`
+  - Called when a Herobrine mob is spawned.
+  - Types: `"herobrine:herobrine", "herobrine:herobrine_footsteps", "herobrine:herobrine_stalker"`.
+  - `pos` is a position where the mob was spawned at.
 
 ## In the Fog API Variables
 

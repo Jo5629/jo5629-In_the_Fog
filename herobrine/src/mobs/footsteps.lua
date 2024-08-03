@@ -76,6 +76,10 @@ minetest.register_globalstep(function(dtime)
 				name = "herobrine:herobrine_footsteps",
 				ignore_count = true,
 			})
+
+			for _, callback in ipairs(herobrine.registered_on_spawn) do
+				callback("herobrine:herobrine_footsteps", pos)
+			end
 		end
 	end
 end)

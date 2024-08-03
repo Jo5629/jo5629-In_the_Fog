@@ -56,6 +56,10 @@ local def = {
 					name = "herobrine:herobrine",
 					ignore_count = true,
 				})
+
+				for _, callback in ipairs(herobrine.registered_on_spawn) do
+					callback("herobrine:herobrine", obj_pos)
+				end
 			end
 			minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")

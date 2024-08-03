@@ -15,7 +15,6 @@ minetest.register_node("herobrine:shrine_node", {
     is_ground_content = false,
     groups = {cracky = 3},
     sounds = default.node_sound_stone_defaults(),
-    --[[
     on_ignite = function(pos, igniter)
         local time_left = minetest.get_gametime() - old_time
         if not (time_left >= interval) then
@@ -35,16 +34,20 @@ minetest.register_node("herobrine:shrine_node", {
                     minetest.set_node(flame_pos, {name = "fire:permanent_flame"})
                 end
                 minetest.chat_send_all(minetest.colorize("#FF0000", "WARNING. UNKNOWN SPECIMEN FOUND."))
-                mobs:add_mob({x = flame_pos.x, y = flame_pos.y + 1, z = flame_pos.z}, {
+                local pos = {x = flame_pos.x, y = flame_pos.y + 1, z = flame_pos.z}
+                mobs:add_mob(pos, {
                     name = "herobrine:herobrine",
                     ignore_count = true,
                 })
+
+                for _, callback in ipairs(herobrine.registered_on_spawn) do
+                    callback("herobrine:herobrine", pos)
+                end
             end)
             old_time = minetest.get_gametime()
             storage:set_int("herobrine:shrine_gametime", old_time)
         end
     end
-    ]]
 })
 
 minetest.register_craft({

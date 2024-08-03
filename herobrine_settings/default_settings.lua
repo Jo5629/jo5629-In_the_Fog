@@ -18,12 +18,6 @@ herobrine_settings.register_setting("despawn_radius", {
     value = 5,
 }, true)
 
-herobrine_settings.register_setting("stalking_days", {
-    type = "number",
-    description = "How much in-game days it takes until Herobrine starts stalking players.",
-    value = 1,
-}, true)
-
 herobrine_settings.register_setting("stalking_timer", {
     type = "number",
     description = "Interval between when Herobrine stalks a player (in seconds).",
@@ -34,22 +28,24 @@ herobrine_settings.register_setting("stalking_chance", {
     type = "table",
     description = "The chance for Herobrine to stalk a player.",
     value = {
-        days = {1, 3, 5, 8, 10},
-        vals = {0, 10, 30, 30, 40},
+        days = {1, 3, 5, 8,},
+        vals = {0, 10, 30, 35,},
     },
 }, true)
 
 herobrine_settings.register_setting("random_door_opening", {
-    type = "number",
+    type = "table",
     description = "The chance of a door being randomly open in your world.",
-    value = 20,
-    max = 100,
+    value = {
+        days = {7, 8, 12},
+        vals = {0, 5, 10},
+    },
 }, true)
 
 herobrine_settings.register_setting("random_door_opening_interval", {
     type = "number",
     description = "The interval between the ABM of randomly opening doors (in seconds).",
-    value = 600,
+    value = 1200,
 }, true)
 
 herobrine_settings.register_setting("game_crash", {
@@ -82,7 +78,7 @@ herobrine_settings.register_setting("footsteps_chance", {
 
 herobrine_settings.register_setting("footsteps_interval", {
     type = "number",
-    description = "Interval between footsteps playing (in seconds)",
+    description = "Interval between Footsteps Herobrine spawning.",
     value = 600,
 }, true)
 
@@ -128,7 +124,7 @@ herobrine_settings.register_setting("ambience_chance", {
     description = "The chance of a random sound playing.",
     value = {
         days = {0, 2, 5, 10},
-        vals = {0, 10, 15, 20}
+        vals = {0, 10, 15, 20},
     }
 }, true)
 
@@ -141,7 +137,7 @@ herobrine_settings.register_setting("ambience_volume", {
 herobrine_settings.register_setting("convert_stalker", {
     type = "number",
     description = "The chance of Stalking Herobrine will convert to Regular Herobrine.",
-    value = 3,
+    value = 1,
     max = 100,
 }, true)
 
@@ -153,7 +149,7 @@ herobrine_settings.register_setting("signs_enabled", {
 
 herobrine_settings.register_setting("signs_spawnable_on", {
     type = "table",
-    description = "Node that random signs can spawn on",
+    description = "Nodes list that random signs can spawn on",
     value = {"group:soil", "group:stone", "group:sand"},
 }, true)
 
@@ -165,9 +161,18 @@ herobrine_settings.register_setting("signs_spawn_interval", {
 
 herobrine_settings.register_setting("signs_spawn_chance", {
     type = "table",
-    description = "The chance of a random sign to spawn. (Out of 100)",
+    description = "The chance of a random sign to spawn.",
     value = {
         days = {5, 6, 8, 12},
         vals = {0, 10, 20, 30},
+    },
+}, true)
+
+herobrine_settings.register_setting("herobrine_chance", {
+    type = "table",
+    description = "The chance of Actual Herobrine to spawn.",
+    value = {
+        days = {11, 12, 17, 25},
+        vals = {0, 2, 8, 15},
     },
 }, true)

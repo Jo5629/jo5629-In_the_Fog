@@ -12,7 +12,7 @@ function herobrine.line_of_sight(pos1, pos2)
             ["glasslike_framed_optional"] = true,
         }
         local def = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
-        if not (glass_drawtypes[def.drawtype]) then
+        if not glass_drawtypes[def.drawtype] then
             success, pos = false, pointed_thing.under
             break
         end
@@ -58,6 +58,11 @@ function herobrine.stalk_player(pname, pos)
     obj:yaw_to_pos(minetest.get_player_by_name(pname):get_pos(), 0)
     obj.facing_pname = pname
     minetest.sound_play({name = "herobrine_stalking"}, {to_player = pname}, true)
+
+    for _, callback in ipairs(herobrine.registered_on_spawn) do
+        callback("herobrine:herobrine_stalker", pos)
+    end
+
     minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. pname .. ".")
 end
 
@@ -67,10 +72,6 @@ minetest.register_globalstep(function(dtime)
     chance = herobrine_settings.get_setting_val_from_day_count("stalking_chance", herobrine.get_day_count())
 
     local temp_chance = chance
-    if herobrine.get_day_count() < herobrine_settings.get_setting("stalking_days") then
-        timer = 0
-        return
-    end
 
     timer = timer + dtime
     if (minetest.get_timeofday() * 24) >= 20 and chance ~= 0 then --> Try some weighted chance.

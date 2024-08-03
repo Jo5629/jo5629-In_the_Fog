@@ -11,4 +11,6 @@ dofile(modpath .. "/api.lua")
 dofile(modpath .. "/formspec.lua")
 dofile(modpath .. "/default_settings.lua")
 
-herobrine_settings.load_settings()
+minetest.register_on_mods_loaded(function()
+    herobrine_settings.load_settings()
+end)
