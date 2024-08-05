@@ -121,6 +121,14 @@ herobrine.signs.register_text({"en"}, {
 - `herobrine.set_day_count(num)`
   - Sets the daycount.
   - `num` is a number.
+- `herobrine.spawnHerobrine(name, pos)` - Returns `boolean, table`
+  - Spawns a Herobrine at position `pos`.
+  - Activates callbacks.
+  - `boolean` - `true` for success and `false` for failure.
+  - `table` is a luaentity table for the mob only if `boolean` is `true`.
+- `herobrine.despawnHerobrine(luaentity)`
+  - Despawns a luaentity.
+  - Activates callbacks.
 
 ### Subcommands
 
@@ -154,8 +162,12 @@ The command can then be accessed using `/herobrine save_settings`.
   - `daycount` is a number.
 - `herobrine.register_on_spawn(function(name, pos))`
   - Called when a Herobrine mob is spawned.
-  - Types: `"herobrine:herobrine", "herobrine:herobrine_footsteps", "herobrine:herobrine_stalker"`.
+  - `name` can be any of these types: `"herobrine:herobrine", "herobrine:herobrine_footsteps", "herobrine:herobrine_stalker"`.
   - `pos` is a position where the mob was spawned at.
+  - Must return `true` otherwise the mob will not spawn.
+- `herobrine.register_on_despawn(function(name, pos))`
+  - Called when a Herobrine mob has been despawned.
+  - `name` and `pos` are the same like in `herobrine.register_on_spawn`.
 
 ## In the Fog API Variables
 

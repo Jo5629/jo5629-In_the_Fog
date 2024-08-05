@@ -28,6 +28,10 @@ minetest.register_node("herobrine:shrine_node", {
             if timeofday < 20 then
                 minetest.set_timeofday(20/24)
             end
+
+            old_time = minetest.get_gametime()
+            storage:set_int("herobrine:shrine_gametime", old_time)
+
             minetest.after(2, function()
                 herobrine.lightning_strike(flame_pos)
                 if node_name == "fire:basic_flame" or node_name == "lightning:dying_flame" or node_name == "air" then
@@ -35,17 +39,9 @@ minetest.register_node("herobrine:shrine_node", {
                 end
                 minetest.chat_send_all(minetest.colorize("#FF0000", "WARNING. UNKNOWN SPECIMEN FOUND."))
                 local pos = {x = flame_pos.x, y = flame_pos.y + 1, z = flame_pos.z}
-                mobs:add_mob(pos, {
-                    name = "herobrine:herobrine",
-                    ignore_count = true,
-                })
 
-                for _, callback in ipairs(herobrine.registered_on_spawn) do
-                    callback("herobrine:herobrine", pos)
-                end
+                herobrine.spawnHerobrine("herobrine:herobrine", pos)
             end)
-            old_time = minetest.get_gametime()
-            storage:set_int("herobrine:shrine_gametime", old_time)
         end
     end
 })

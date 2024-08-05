@@ -39,8 +39,8 @@ local def = {
 	do_punch = function (self, hitter)
 		minetest.log("action", "[In the Fog] Herobrine despawned because he was punched.")
 		if math.random(1, 100) <= herobrine_settings.get_setting("jumpscare_chance") then herobrine.jumpscare_player(hitter, nil, true) end
-		mobs:remove(self)
 		minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
+		herobrine.despawnHerobrine(self)
 		return false
 	end,
     do_custom = function(self, dtime)
@@ -50,26 +50,20 @@ local def = {
 
 	    self.despawn_timer = self.despawn_timer + dtime
 		if self.despawn_timer >= despawn_timer then
-			mobs:remove(self)
-			if math.random(1, 100) <= herobrine_settings.get_setting("convert_stalker") then
-				mobs:add_mob(obj_pos, {
-					name = "herobrine:herobrine",
-					ignore_count = true,
-				})
-
-				for _, callback in ipairs(herobrine.registered_on_spawn) do
-					callback("herobrine:herobrine", obj_pos)
-				end
-			end
+			herobrine.despawnHerobrine(self)
 			minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
+
+			if math.random(1, 100) <= herobrine_settings.get_setting("convert_stalker") then
+				herobrine.spawnHerobrine("herobrine:herobrine", obj_pos)
+			end
 			return false
 		end
 
 		local objects = minetest.get_objects_inside_radius(obj_pos, despawn_radius)
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
-				mobs:remove(self)
+				herobrine.despawnHerobrine(self)
 				minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
 				if math.random(1, 100) <= herobrine_settings.get_setting("jumpscare_chance") then herobrine.jumpscare_player(obj, nil, true) end
 				minetest.log("action", string.format("[In the Fog] Herobrine despawned due to a player being within %d blocks of it.", despawn_radius))
@@ -88,7 +82,7 @@ local def = {
 			self:stop_attack()
 			if vector.distance(obj_pos, pos) > 120 then
 				minetest.log("action", "[In the Fog] Herobrine despawned because he was too far from the player.")
-				mobs:remove(self)
+				herobrine.despawnHerobrine(self)
 				return false
 			end
 			--[[ STILL VERY WIP. WILL IMPLEMENT IN THE FUTURE.
@@ -112,5 +106,6 @@ local def = {
     end,
 }
 
-mobs:register_mob("herobrine:herobrine_stalker", def)
-mobs:register_egg("herobrine:herobrine_stalker", "Spawn Stalking Herobrine", "herobrine_spawn_egg.png", 0, false)
+local mob_name = "herobrine:herobrine_stalker"
+mobs:register_mob(mob_name, def)
+mobs:register_egg(mob_name, "Spawn Stalking Herobrine", "herobrine_spawn_egg.png", 0, false)

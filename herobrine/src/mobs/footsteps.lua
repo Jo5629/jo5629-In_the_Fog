@@ -42,7 +42,7 @@ local def = {
 	do_custom = function(self, dtime)
         self.despawn_timer = self.despawn_timer + dtime
         if self.despawn_timer >= 30 then
-            mobs:remove(self)
+			herobrine.despawnHerobrine(self)
             return false
         end
 
@@ -50,7 +50,7 @@ local def = {
         local objs = minetest.get_objects_inside_radius(object:get_pos(), 3)
         for _, obj in pairs(objs) do
             if obj:is_player() then
-                mobs:remove(self)
+				herobrine.despawnHerobrine(self)
                 return false
             end
         end
@@ -72,14 +72,7 @@ minetest.register_globalstep(function(dtime)
 
 		local pos, success = herobrine.find_position_near(randplayer:get_pos(), math.random(30, 50))
 		if success then
-			mobs:add_mob(pos, {
-				name = "herobrine:herobrine_footsteps",
-				ignore_count = true,
-			})
-
-			for _, callback in ipairs(herobrine.registered_on_spawn) do
-				callback("herobrine:herobrine_footsteps", pos)
-			end
+			herobrine.spawnHerobrine("herobrine:herobrine_footsteps", pos)
 		end
 	end
 end)

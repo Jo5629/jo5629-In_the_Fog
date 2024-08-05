@@ -12,6 +12,22 @@ minetest.register_privilege("herobrine_admin", {
 --> Callbacks.
 dofile(srcpath .. "/callbacks.lua")
 
+--> Do not know where the functions should go for the moment.
+function herobrine.spawnHerobrine(name, pos)
+    if not herobrine.registered_on_spawn:runCallbacks(true, name, pos) then
+        return false
+    end
+    return true, mobs:add_mob(pos, {
+        name = name,
+        ignore_count = true,
+    })
+end
+
+function herobrine.despawnHerobrine(luaentity)
+    herobrine.registered_on_despawn:runCallbacks(false, luaentity.name, luaentity.object:get_pos())
+    mobs:remove(luaentity)
+end
+
 --> Commands.
 dofile(srcpath .. "/commands.lua")
 
@@ -30,5 +46,8 @@ dofile(srcpath .. "/functions/random_signs.lua")
 dofile(srcpath .. "/mobs/stalker.lua")
 dofile(srcpath .. "/mobs/herobrine.lua")
 dofile(srcpath .. "/mobs/footsteps.lua")
+
+--> Tests.
+dofile(srcpath .. "/tests.lua")
 
 minetest.log("action", "[In the Fog] Mod initialized. VERSION: " .. version)

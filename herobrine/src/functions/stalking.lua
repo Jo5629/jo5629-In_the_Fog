@@ -51,17 +51,12 @@ function herobrine.find_position_near(pos, radius)
 end
 
 function herobrine.stalk_player(pname, pos)
-    local obj = mobs:add_mob(pos, {
-        name = "herobrine:herobrine_stalker",
-        ignore_count = true
-    })
+    local success, obj = herobrine.spawnHerobrine("herobrine:herobrine_stalker", pos)
+    if not success then return end
+
     obj:yaw_to_pos(minetest.get_player_by_name(pname):get_pos(), 0)
     obj.facing_pname = pname
     minetest.sound_play({name = "herobrine_stalking"}, {to_player = pname}, true)
-
-    for _, callback in ipairs(herobrine.registered_on_spawn) do
-        callback("herobrine:herobrine_stalker", pos)
-    end
 
     minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. pname .. ".")
 end
