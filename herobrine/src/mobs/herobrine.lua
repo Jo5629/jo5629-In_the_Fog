@@ -46,8 +46,7 @@ local def = {
 	do_custom = function(self, dtime)
 		self.despawn_timer = self.despawn_timer + dtime
 		if self.despawn_timer >= herobrine_settings.get_setting("despawn_timer") then
-			local pos = self.object:get_pos()
-			herobrine.lightning_strike(pos)
+			herobrine.lightning_strike(self.object:get_pos())
 			herobrine.despawnHerobrine(self)
 			return false
 		end
@@ -63,7 +62,7 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 	if player:get_hp() > 0 and player:get_hp() - damage <= 0 and luaentity.name == "herobrine:herobrine" and minetest.is_player(player) then --> From https://github.com/appgurueu/deathlist/blob/master/main.lua#L242
 		minetest.after(2, function()
 			herobrine.lightning_strike(hitter:get_pos())
-			mobs:remove(luaentity)
+			herobrine.despawnHerobrine(luaentity)
 			minetest.chat_send_all(minetest.format_chat_message("Herobrine", "I will return."))
 			herobrine.set_day_count(0)
 		end)

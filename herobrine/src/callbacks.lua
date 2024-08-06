@@ -4,7 +4,7 @@ local function make_registration()
         t[#t + 1] = func
     end
 
-    function t:runCallbacks(stop, ...)
+    function t:RunCallbacks(stop, ...)
         for _, callback in ipairs(self) do
             if not callback(...) and stop then
                 return false

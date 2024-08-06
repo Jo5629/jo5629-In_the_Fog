@@ -38,18 +38,29 @@ local def = {
 
     on_spawn = function(self)
         self.despawn_timer = 0
+        if math.random(1, 5) <= 1 then
+            local props = self.object:get_properties()
+            props.show_on_minimap = true
+            self.object:set_properties(props)
+        end
     end,
 	do_custom = function(self, dtime)
         self.despawn_timer = self.despawn_timer + dtime
+		local object = self.object
         if self.despawn_timer >= 30 then
+            if math.random(1, 10) <= 1 then
+                herobrine.lightning_strike(object:get_pos())
+            end
 			herobrine.despawnHerobrine(self)
             return false
         end
 
-        local object = self.object
         local objs = minetest.get_objects_inside_radius(object:get_pos(), 3)
         for _, obj in pairs(objs) do
             if obj:is_player() then
+                if math.random(1, 10) <= 1 then
+                    herobrine.lightning_strike(object:get_pos())
+                end
 				herobrine.despawnHerobrine(self)
                 return false
             end
@@ -70,9 +81,76 @@ minetest.register_globalstep(function(dtime)
 		local players = minetest.get_connected_players()
 		local randplayer = players[math.random(1, #players)]
 
-		local pos, success = herobrine.find_position_near(randplayer:get_pos(), math.random(30, 50))
+		local pos, success = herobrine.find_position_near(randplayer:get_pos(), math.random(25, 35))
 		if success then
 			herobrine.spawnHerobrine("herobrine:herobrine_footsteps", pos)
 		end
 	end
 end)
+
+--> Chatcommands.
+local function hud_waypoint_def(pos)
+    return {
+    	hud_elem_type = "waypoint",
+    	name = "Position of Footsteps Herobrine:",
+    	text = "m",
+    	number = 0x85FF00,
+    	world_pos = pos
+	}
+end
+
+local function footsteps_player(pname, target, waypoint)
+    local playerobj = minetest.get_player_by_name(pname)
+    local targetobj = minetest.get_player_by_name(target)
+    if targetobj then
+        local ppos = targetobj:get_pos()
+        ppos.y = ppos.y + 1
+        local pos, success = herobrine.find_position_near(ppos, math.random(25, 35))
+        if success then
+            herobrine.spawnHerobrine("herobrine:herobrine_footsteps", pos)
+        else
+            return false, string.format("Could not find an eligible node.", target)
+        end
+
+        if waypoint == "true" then
+            local id = playerobj:hud_add(hud_waypoint_def(pos))
+            minetest.after(7, function()
+                playerobj:hud_remove(id)
+            end)
+        end
+
+        return true, "Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1)
+    else
+        return false, "Command is unable to execute."
+    end
+end
+
+herobrine.register_subcommand("footsteps_player", {
+    privs = herobrine.commands.default_privs,
+    hidden = true,
+    --description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
+    func = function(name)
+        return footsteps_player(name, name)
+    end,
+})
+
+herobrine.register_subcommand("footsteps_player :waypoint", {
+    privs = herobrine.commands.default_privs,
+    --description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
+    func = function(name, waypoint)
+        return footsteps_player(name, name, waypoint)
+    end
+})
+
+herobrine.register_subcommand("footsteps_player :target :waypoint", {
+    privs = herobrine.commands.default_privs,
+    --description = "Stalks a player. If waypoint is true, wherever Herobrine is spawned at will be marked.",
+    func = function(name, target, waypoint)
+        local player = minetest.get_player_by_name(target)
+        if player then
+            return footsteps_player(name, target, waypoint)
+        else
+            return false, "Unable to find " .. target .. "."
+        end
+    end,
+})

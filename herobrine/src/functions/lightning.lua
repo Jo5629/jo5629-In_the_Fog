@@ -1,6 +1,11 @@
 --> Works with the "lightning" mod by sofar.
+local lightning_enabled = minetest.get_modpath("lightning")
+if lightning_enabled then
+    lightning.auto = false
+end
+
 function herobrine.lightning_strike(pos)
-    if minetest.get_modpath("lightning") then
+    if lightning_enabled then
         lightning.strike(pos)
     end
 end

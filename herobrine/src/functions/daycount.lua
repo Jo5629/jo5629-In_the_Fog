@@ -16,7 +16,7 @@ local function check_daycount()
     if new_day ~= old_day then
         herobrine.set_day_count(herobrine_daycount + 1)
 
-        herobrine.registered_on_day_change:runCallbacks(false, herobrine_daycount)
+        herobrine.registered_on_day_change:RunCallbacks(false, herobrine_daycount)
         old_day = new_day
     end
     minetest.after(15, check_daycount)

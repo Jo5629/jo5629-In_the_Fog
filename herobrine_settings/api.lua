@@ -122,7 +122,3 @@ function herobrine_settings.get_setting_val_from_day_count(name, days)
     local tbl = def.value
     return tbl.vals[herobrine_settings.nearest_value(tbl.days, days)], true
 end
-
-minetest.register_on_shutdown(function()
-    herobrine_settings.save_settings()
-end)
