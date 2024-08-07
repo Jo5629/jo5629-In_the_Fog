@@ -22,9 +22,9 @@ function herobrine.jumpscare_player(player, duration, sound)
     minetest.log("action", string.format("[In the Fog] Jumpscared %s.", player:get_player_name()))
 end
 
-herobrine.register_subcommand("jumpscare", {
+herobrine_commands.register_subcommand("jumpscare", {
     hidden = true,
-    privs = herobrine.commands.default_privs,
+    privs = herobrine_commands.default_privs,
     description = "Jumpscare a player.",
     func = function(name)
         local player = minetest.get_player_by_name(name)
@@ -34,8 +34,8 @@ herobrine.register_subcommand("jumpscare", {
     end,
 })
 
-herobrine.register_subcommand("jumpscare :target", {
-    privs = herobrine.commands.default_privs,
+herobrine_commands.register_subcommand("jumpscare :target", {
+    privs = herobrine_commands.default_privs,
     description = "Jumpscare a player.",
     func = function(name, target)
         local player = minetest.get_player_by_name(target)

@@ -13,7 +13,7 @@ function herobrine.despawnHerobrine(luaentity)
     mobs:remove(luaentity)
 end
 
-herobrine._spawned = false
+herobrine._spawned = false --> Only change this if you know what you are doing.
 herobrine.register_on_spawn(function(name, pos)
     if herobrine._spawned then
         return false

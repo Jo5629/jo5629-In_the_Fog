@@ -66,7 +66,7 @@ herobrine_settings.setting_formspec = flow.make_gui(function(player, ctx)
     end
 
     local formspec = gui.VBox{
-        gui.Label{label = "In the Fog Settings Page:", align_h = "centre"},
+        gui.Label{label = "In the Fog Settings Page:", align_h = "centre", style = {font = "bold", font_size = "*1.5"}},
         gui.ScrollableVBox(vbox),
     }
    return formspec

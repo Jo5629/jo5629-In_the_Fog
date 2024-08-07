@@ -20,10 +20,11 @@ local def = {
 	fall_damage = 0,
 	knock_back = false,
     immune_to = {"all"},
-	glow = 8,
+	glow = 4,
 
 	on_spawn = function(self)
 		self.despawn_timer = 0
+		self.staring_timer = 0
 
 		local pos = {}
 		if self.facing_pname == nil then
@@ -55,7 +56,9 @@ local def = {
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
 
 			if math.random(1, 100) <= herobrine_settings.get_setting("convert_stalker") then
-				herobrine.spawnHerobrine("herobrine:herobrine", obj_pos)
+				minetest.after(0.25, function()
+					herobrine.spawnHerobrine("herobrine:herobrine", obj_pos)
+				end)
 			end
 			return false
 		end
@@ -85,23 +88,36 @@ local def = {
 				herobrine.despawnHerobrine(self)
 				return false
 			end
-			--[[ STILL VERY WIP. WILL IMPLEMENT IN THE FUTURE.
-			local dir = player:get_look_dir()
-			local temp_obj_pos = {x = obj_pos.x, y = obj_pos.y + 1, z = obj_pos.z}
-			local rayend = vector.subtract(temp_obj_pos, 5)
-			local ray = minetest.raycast(player:get_pos(), rayend, true, false)
-			for pointed_thing in ray do
-				if pointed_thing.type ~= "object" then return end
-				if pointed_thing.ref ~= player and pointed_thing.ref ~= nil and pointed_thing.ref:get_luaentity().name == self.name then
-					if math.random(1, 100) <= (herobrine_settings.get_setting("jumpscare_chance") * 100000)then
-						herobrine.jumpscare_player(player, nil, true)
-						mobs:remove(self)
-						minetest.log("action", string.format("[In the Fog] Herobrine despawned through a player looking at him."))
-						return false
-					end
+
+			pos.y = pos.y + 1
+			if not herobrine.line_of_sight(pos, obj_pos) then
+				return
+			end
+			self.staring_timer = self.staring_timer + dtime
+			local dir = vector.direction(pos, obj_pos)
+			local pdir = player:get_look_dir()
+			local diff = vector.length(vector.subtract(dir, pdir))
+			if diff <= 0.325 and vector.distance(pos, obj_pos) <= 40 and self.despawn_timer >= 6 and self.staring_timer >= 3 then
+				if math.random(1, 10000) <= 1 then
+					self.object:set_pos(player:get_pos())
+				end
+				if math.random(1, 10000) <= 1 then
+					herobrine.despawnHerobrine(self)
+
+					local id = player:hud_add({
+						hud_elem_type = "image",
+						alignment = {x = 0, y = 0},
+						position = {x = 0.5, y = 0.5},
+						scale = {x = 80, y = 80},
+						text = "[fill:80x80:#000000",
+						z_index = 1000,
+					})
+					minetest.after(3, function()
+						player:hud_remove(id)
+					end)
+					return false
 				end
 			end
-			]]
 		end
     end,
 }

@@ -116,8 +116,8 @@ local function place_random_sign(pname, target, range, waypoint)
     end
 end
 
-herobrine.register_subcommand("place_random_sign :target :num :waypoint", {
-    privs = herobrine.commands.default_privs,
+herobrine_commands.register_subcommand("place_random_sign :target :num :waypoint", {
+    privs = herobrine_commands.default_privs,
     description = "Places a random sign with text around the player",
     func = function(name, target, num, waypoint)
         return place_random_sign(name, target, tonumber(num), waypoint)

@@ -6,13 +6,13 @@ function herobrine.line_of_sight(pos1, pos2)
             return
         end
 
-        local glass_drawtypes = {
-            ["glasslike"] = true,
-            ["glasslike_framed"] = true,
-            ["glasslike_framed_optional"] = true,
+        local drawtypes = {
+            ["allfaces"] = true, ["allfaces_optional"] = true, ["airlike"] = true,
+            ["glasslike"] = true, ["glasslike_framed"] = true, ["glasslike_framed_optional"] = true,
+            ["plantlike"] = true, ["plantlike_rooted"] = true,
         }
         local def = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
-        if not glass_drawtypes[def.drawtype] then
+        if not drawtypes[def.drawtype] then
             success, pos = false, pointed_thing.under
             break
         end
@@ -52,13 +52,16 @@ end
 
 function herobrine.stalk_player(pname, pos)
     local success, obj = herobrine.spawnHerobrine("herobrine:herobrine_stalker", pos)
-    if not success then return end
+    if not success then
+        return false
+    end
 
     obj:yaw_to_pos(minetest.get_player_by_name(pname):get_pos(), 0)
     obj.facing_pname = pname
     minetest.sound_play({name = "herobrine_stalking"}, {to_player = pname}, true)
 
     minetest.log("action", "[In the Fog] Herobrine is spawned at: " .. minetest.pos_to_string(pos, 1) .. " stalking " .. pname .. ".")
+    return true
 end
 
 local timer = 0
@@ -104,7 +107,10 @@ local function stalk_player(pname, target, waypoint)
         ppos.y = ppos.y + 1
         local pos, success = herobrine.find_position_near(ppos)
         if success then
-            herobrine.stalk_player(target, pos)
+            if not herobrine.stalk_player(target, pos) then
+                return false, "A Herobrine has already been spawned."
+            end
+            
         else
             return false, string.format("Could not find an eligible node to stalk player %s.", target)
         end
@@ -122,8 +128,8 @@ local function stalk_player(pname, target, waypoint)
     end
 end
 
-herobrine.register_subcommand("stalk_player", {
-    privs = herobrine.commands.default_privs,
+herobrine_commands.register_subcommand("stalk_player", {
+    privs = herobrine_commands.default_privs,
     hidden = true,
     description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name)
@@ -131,16 +137,16 @@ herobrine.register_subcommand("stalk_player", {
     end,
 })
 
-herobrine.register_subcommand("stalk_player :waypoint", {
-    privs = herobrine.commands.default_privs,
+herobrine_commands.register_subcommand("stalk_player :waypoint", {
+    privs = herobrine_commands.default_privs,
     description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, waypoint)
         return stalk_player(name, name, waypoint)
     end
 })
 
-herobrine.register_subcommand("stalk_player :target :waypoint", {
-    privs = herobrine.commands.default_privs,
+herobrine_commands.register_subcommand("stalk_player :target :waypoint", {
+    privs = herobrine_commands.default_privs,
     description = "Stalks a player. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, target, waypoint)
         local player = minetest.get_player_by_name(target)

@@ -102,7 +102,8 @@ herobrine.signs.register_text({"en"}, {
 
 ## Miscellaneous API Functions
 
-- `herobrine.stalk_player(pname, pos)` - Spawns `herobrine:herobrine_stalker` at `pos` facing `pname`.
+- `herobrine.stalk_player(pname, pos)` - Spawns `herobrine:herobrine_stalker` at `pos` facing `pname`. Returns a boolean.
+  - `true` for success and `false` for failure.
 - `herobrine.find_position_near(pos, radius)` - This function is used in `herobrine/functions/stalking.lua`. Finds a position that meets the standards of `spawnable_on` . Returns `newpos` and `true` for success. Otherwise returns `pos` and `false`.
   - The node returned is an **AIR NODE** that is **TWO BLOCKS** above the original position.
   - `radius` is a number. Must be less than or equal to 79 to stop an overflow.
@@ -132,16 +133,16 @@ herobrine.signs.register_text({"en"}, {
 
 ### Subcommands
 
-- `herobrine.register_subcommand(name, def, hidden)` - Registers a subcommand under the `herobrine` command.
+- `herobrine_commands.register_subcommand(name, def, hidden)` - Registers a subcommand under the `herobrine` command.
   - `name` and `def` are both the equivalent to `name` and `def` from [lib_chatcmdbuilder](https://content.minetest.net/packages/rubenwardy/lib_chatcmdbuilder/).
   - `hidden` is a boolean. If set to true, the command will not be shown when `/herobrine help` is executed. Default is false.
 
 **EXAMPLE:**
 
 ``` lua
-herobrine.register_subcommand("save_settings", {
+herobrine_commands.register_subcommand("save_settings", {
   description = "Saves the current settings to a config file.",
-  privs = herobrine.commands.default_privs,
+  privs = herobrine_commands.default_privs,
   func = function(name)
       local success = herobrine_settings.save_settings()
       if success then
@@ -171,8 +172,8 @@ The command can then be accessed using `/herobrine save_settings`.
 
 ## In the Fog API Variables
 
-- `herobrine.commands.default_privs` - Returns a table with the default privileges.
-  - Can be used in both `minetest.register_subcommand` and `herobrine.register_subcommand`.
+- `herobrine_commands.default_privs` - Returns a table with the default privileges.
+  - Can be used in both `minetest.register_subcommand` and `herobrine_commands.register_subcommand`.
   - `server, interact, shout, herobrine_admin` are the default privileges.
 - `herobrine_settings.conf_modpath` - Returns a filepath used in order to help store herobrine_settings.conf.
   - Defaults to what is returned from `minetest.get_worldpath()`.

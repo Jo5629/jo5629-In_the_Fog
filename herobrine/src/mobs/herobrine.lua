@@ -33,7 +33,7 @@ local def = {
 		punch_start = 189, --200
 		punch_end = 198 --219
 	},
-	glow = 8,
+	glow = 4,
 	fire_damage = 0,
 
 	on_spawn = function(self)

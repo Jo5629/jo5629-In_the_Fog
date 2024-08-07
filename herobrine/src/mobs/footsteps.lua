@@ -107,7 +107,9 @@ local function footsteps_player(pname, target, waypoint)
         ppos.y = ppos.y + 1
         local pos, success = herobrine.find_position_near(ppos, math.random(25, 35))
         if success then
-            herobrine.spawnHerobrine("herobrine:herobrine_footsteps", pos)
+            if not herobrine.spawnHerobrine("herobrine:herobrine_footsteps", pos) then
+                return false, "A Herobrine has already been spawned."
+            end
         else
             return false, string.format("Could not find an eligible node.", target)
         end
@@ -125,8 +127,8 @@ local function footsteps_player(pname, target, waypoint)
     end
 end
 
-herobrine.register_subcommand("footsteps_player", {
-    privs = herobrine.commands.default_privs,
+herobrine_commands.register_subcommand("footsteps_player", {
+    privs = herobrine_commands.default_privs,
     hidden = true,
     --description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name)
@@ -134,16 +136,16 @@ herobrine.register_subcommand("footsteps_player", {
     end,
 })
 
-herobrine.register_subcommand("footsteps_player :waypoint", {
-    privs = herobrine.commands.default_privs,
+herobrine_commands.register_subcommand("footsteps_player :waypoint", {
+    privs = herobrine_commands.default_privs,
     --description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, waypoint)
         return footsteps_player(name, name, waypoint)
     end
 })
 
-herobrine.register_subcommand("footsteps_player :target :waypoint", {
-    privs = herobrine.commands.default_privs,
+herobrine_commands.register_subcommand("footsteps_player :target :waypoint", {
+    privs = herobrine_commands.default_privs,
     --description = "Stalks a player. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, target, waypoint)
         local player = minetest.get_player_by_name(target)
