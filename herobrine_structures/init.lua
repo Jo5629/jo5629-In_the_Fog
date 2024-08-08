@@ -1,33 +1,33 @@
-local structure_modpath = minetest.get_modpath(minetest.get_current_modname()) .. "/schematics"
-
 local enabled = herobrine_settings.get_setting("schematics_enabled")
 if not enabled then return end
 
+minetest.log("action", "[In the Fog] Schematic generation has been enabled.")
+
+local structure_modpath = minetest.get_modpath(minetest.get_current_modname()) .. "/schematics"
+
 --> Tunnel.
 minetest.register_decoration({
-    name = "herobrine_structures:tunnel",
     deco_type = "schematic",
     place_on = {"group:stone"},
-    sidelen = 80,
-    fill_ratio = 0.008,
-    flags = "place_center_x,place_center_z,force_placement",
+    sidelen = 9,
+    fill_ratio = 0.00003,
     y_max = -30000,
-    y_min = -100,
+    y_min = -50,
     schematic = structure_modpath .. "/tunnel.mts",
-    rotation = "random",
+    flags = "place_center_x, place_center_z, force_placement",
+    rotation = "random"
 })
 
 --> Sandstone Pyramid.
 minetest.register_decoration({
-    name = "herobrine_structures:sandstone_pyramid",
     deco_type = "schematic",
-    place_on = {"default:river_water_source", "default:water_source", "group:sand"},
-    sidelen = 80,
-    fill_ratio = 0.008,
-    flags = "place_center_x,place_center_z,force_placement,liquid_surface",
-    y_max = -30,
-    y_min = 30,
+    place_on = {"group:sand", "group:water"},
+    sidelen = 9,
+    fill_ratio = 0.00003,
+    y_max = 30000,
+    y_min = 2,
     schematic = structure_modpath .. "/sandstone_pyramid.mts",
+    flags = "place_center_x, place_center_z, force_placement",
     rotation = "random",
     biomes = {
         "taiga_ocean",

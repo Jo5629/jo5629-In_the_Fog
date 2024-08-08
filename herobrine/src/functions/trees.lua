@@ -1,7 +1,10 @@
 --> Some of the leaves might be cut off.
 local enabled = herobrine_settings.get_setting("leafless_trees_enabled")
+if not enabled then return end
+
+minetest.log("action", "[In the Fog] Leafless tree generation has been enabled.")
+
 minetest.register_on_generated(function(minp, maxp, blockseed)
-    if not enabled then return end
     local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
     minp, maxp = vm:get_emerged_area() --> Somehow this works but the original minp and maxp do not???
 

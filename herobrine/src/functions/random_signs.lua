@@ -2,6 +2,7 @@ local signs_lib_enabled = minetest.get_modpath("signs_lib")
 if signs_lib_enabled then
     minetest.log("info", "[In the Fog] signs_lib is enabled, using that for random_signs.lua")
 end
+minetest.log("action", "[In the Fog] Sign generation has been enabled.")
 
 herobrine.signs = {}
 
