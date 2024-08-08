@@ -35,8 +35,9 @@ function herobrine_ambience.play_ambience(sound_name, duration)
     return sound, job
 end
 
-herobrine_ambience.register_sound("herobrine_ambience1")
-herobrine_ambience.register_sound("herobrine_ambience2")
+for i = 1, 4 do
+    herobrine_ambience.register_sound("herobrine_ambience" .. tostring(i))
+end
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
@@ -47,7 +48,7 @@ minetest.register_globalstep(function(dtime)
     if timer >= interval then
         if math.random(1, 100) <= chance then
             local sound = herobrine_ambience.get_random_sound()
-            herobrine_ambience.play_ambience(sound, math.random(15, 20))
+            herobrine_ambience.play_ambience(sound, math.random(20, 25))
         end
         timer = 0
     end

@@ -39,7 +39,7 @@ herobrine_commands.register_subcommand("ambience :word", {
     description = "Plays ambience. Use *random to play a random sound.",
     privs = herobrine_commands.default_privs,
     func = function(name, word)
-        local duration = math.random(15, 20)
+        local duration = math.random(20, 25)
         if word == "*random" then
             local sound = herobrine_ambience.get_random_sound()
             herobrine_ambience.play_ambience(sound, duration)
@@ -47,8 +47,8 @@ herobrine_commands.register_subcommand("ambience :word", {
         end
         local found = false
         local sound_list = herobrine_ambience.get_ambience_list()
-        for i = 1, #sound_list do
-            if sound_list[i] == word then
+        for _, sound in ipairs(sound_list) do
+            if sound == word then
                 found = true
                 break
             end
@@ -57,6 +57,7 @@ herobrine_commands.register_subcommand("ambience :word", {
             herobrine_ambience.play_ambience(word, duration)
             return true, string.format("Playing ambience sound: %s", word)
         else
+            minetest.chat_send_player(name, table.concat(herobrine_ambience.get_ambience_list(), ","))
             return false, string.format("Was not able to find sound %s.", word)
         end
     end

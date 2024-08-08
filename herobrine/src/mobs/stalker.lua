@@ -35,7 +35,7 @@ local def = {
 			pos = player:get_pos()
 		end
 		self:yaw_to_pos(pos, 0)
-		self.herobrine_ambience = herobrine_ambience.play_ambience(herobrine_ambience.get_random_sound(), math.random(15, 20))
+		self.herobrine_ambience = herobrine_ambience.play_ambience(herobrine_ambience.get_random_sound(), math.random(20, 25))
 	end,
 	do_punch = function (self, hitter)
 		minetest.log("action", "[In the Fog] Herobrine despawned because he was punched.")
