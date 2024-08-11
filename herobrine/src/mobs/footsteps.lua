@@ -77,7 +77,13 @@ minetest.register_globalstep(function(dtime)
 	local interval = herobrine_settings.get_setting("footsteps_interval")
 
 	timer = timer + dtime
-	if timer >= interval and math.random(1, 100) <= chance then
+	if timer >= interval then
+        timer = 0
+
+        if not math.random(1, 100) <= chance then
+            return
+        end
+
 		local players = minetest.get_connected_players()
 		local randplayer = players[math.random(1, #players)]
 

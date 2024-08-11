@@ -75,7 +75,13 @@ minetest.register_globalstep(function(dtime)
     if (minetest.get_timeofday() * 24) >= 20 and chance ~= 0 then --> Try some weighted chance.
         temp_chance = chance + 25
     end
-    if timer >= herobrine_settings.get_setting("stalking_timer") and math.random(1, 100) <= temp_chance then
+    if timer >= herobrine_settings.get_setting("stalking_timer") then
+        timer = 0
+
+        if not math.random(1, 100) <= temp_chance then
+            return
+        end
+
         local players = minetest.get_connected_players()
         local player = players[math.random(1, #players)]
         local name = player:get_player_name()
@@ -83,7 +89,6 @@ minetest.register_globalstep(function(dtime)
         if minetest.pos_to_string(pos, 1) ~= minetest.pos_to_string(player:get_pos(), 1) then
             herobrine.stalk_player(name, pos)
         end
-        timer = 0
     end
 end)
 

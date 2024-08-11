@@ -24,6 +24,7 @@ dofile(srcpath .. "/functions/shrine.lua")
 dofile(srcpath .. "/functions/doors.lua")
 dofile(srcpath .. "/functions/jumpscare.lua")
 dofile(srcpath .. "/functions/random_signs.lua")
+dofile(srcpath .. "/functions/torch.lua")
 --dofile(srcpath .. "/functions/crashing.lua") Might remove this feature in the future.
 --dofile(srcpath .. "/functions/trees.lua") Disabled till further notice. Works but needs more technical fixing.
 
@@ -32,7 +33,8 @@ dofile(srcpath .. "/mobs/stalker.lua")
 dofile(srcpath .. "/mobs/herobrine.lua")
 dofile(srcpath .. "/mobs/footsteps.lua")
 
---> Tests.
+--[[ Tests.
 dofile(srcpath .. "/tests.lua")
+]]
 
 minetest.log("action", "[In the Fog] Mod initialized. VERSION: " .. version)

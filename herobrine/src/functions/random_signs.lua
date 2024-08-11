@@ -133,7 +133,11 @@ minetest.register_globalstep(function(dtime)
     local chance = herobrine_settings.get_setting_val_from_day_count("signs_spawn_chance", herobrine.get_day_count())
     
     timer = timer + dtime
-    if enabled and timer >= interval and math.random(1, 100) <= chance then
+    if timer >= interval then
+        timer = 0
+        if not enabled or not math.random(1, 100) <= chance then
+            return
+        end
         local players = {}
         for _, playerobj in pairs(minetest.get_connected_players()) do
             table.insert(players, playerobj:get_player_name())
@@ -146,6 +150,5 @@ minetest.register_globalstep(function(dtime)
                 herobrine.signs.place_sign(pos, herobrine.signs.generate_random_text())
             end
         end
-        timer = 0
     end
 end)

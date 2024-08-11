@@ -176,3 +176,24 @@ herobrine_settings.register_setting("herobrine_chance", {
         vals = {0, 2, 8, 15},
     },
 }, true)
+
+herobrine_settings.register_setting("torch_enabled", {
+    type = "boolean",
+    description = "Enable/disable torch breaking around the player.",
+    value = true,
+})
+
+herobrine_settings.register_setting("torch_interval", {
+    type = "number",
+    description = "Interval for torches to break (in seconds).",
+    value = 1200,
+}, true)
+
+herobrine_settings.register_setting("torch_chance", {
+    type = "table",
+    description = "The chance for a random torch to break around the player.",
+    value = {
+        days = {6, 7, 10, 12},
+        vals = {0, 5, 10, 15},
+    },
+}, true)

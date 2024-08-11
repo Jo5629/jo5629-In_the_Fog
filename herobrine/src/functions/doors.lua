@@ -20,7 +20,7 @@ minetest.register_abm({
         if not (math.random(1, 100) <= chance) then return end
         local status = doors.door_toggle(pos, node, nil)
         if status then
-            minetest.log("action", string.format("[In the Fog] Door at %s was toggled.", minetest.pos_to_string(pos, 2)))
+            minetest.log("action", string.format("[In the Fog] Door at %s was toggled.", minetest.pos_to_string(pos, 1)))
         end
     end,
 })
