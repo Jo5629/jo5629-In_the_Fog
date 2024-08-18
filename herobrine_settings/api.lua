@@ -122,3 +122,15 @@ function herobrine_settings.get_setting_val_from_day_count(name, days)
     local tbl = def.value
     return tbl.vals[herobrine_settings.nearest_value(tbl.days, days)], true
 end
+
+local rng = PcgRandom(21862175432869)
+function herobrine_settings.random(min, max, num)
+    local rand = rng:next(min, max)
+    if not rand then
+        rand = math.random(min, max) --> Fallback just to be sure.
+    end
+    if not num then
+        return rand
+    end
+    return rand <= num
+end

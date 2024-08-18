@@ -17,7 +17,7 @@ minetest.register_abm({
     catch_up = true,
     action = function(pos, node, active_object_count, active_object_count_wider)
         local chance = herobrine_settings.get_setting_val_from_day_count("random_door_opening", herobrine.get_day_count())
-        if not (math.random(1, 100) <= chance) then return end
+        if not herobrine_settings.random(1, 100, chance) then return end
         local status = doors.door_toggle(pos, node, nil)
         if status then
             minetest.log("action", string.format("[In the Fog] Door at %s was toggled.", minetest.pos_to_string(pos, 1)))

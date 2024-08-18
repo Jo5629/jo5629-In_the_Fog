@@ -9,7 +9,7 @@ herobrine_settings.register_setting("spawnable_on", {
 herobrine_settings.register_setting("despawn_timer", {
     type = "number",
     description = "How long it takes in seconds for Stalking Herobrine to despawn (in seconds).",
-    value = 20,
+    value = 25,
 }, true)
 
 herobrine_settings.register_setting("despawn_radius", {
@@ -193,7 +193,7 @@ herobrine_settings.register_setting("torch_chance", {
     type = "table",
     description = "The chance for a random torch to break around the player.",
     value = {
-        days = {6, 7, 10, 12},
-        vals = {0, 5, 10, 15},
+        days = {6, 7, 10, 12, 20},
+        vals = {0, 5, 7, 10, 5},
     },
 }, true)

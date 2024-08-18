@@ -15,8 +15,8 @@ local def = {
 	jump = true,
 	makes_footstep_sound = true,
 	sounds = {},
-    walk_velocity = 1.3,
-    run_velocity = 3,
+    walk_velocity = 4,
+    run_velocity = 6,
 	pushable = true,
 	view_range = 150,
 	fear_height = 0,
@@ -38,7 +38,7 @@ local def = {
 
     on_spawn = function(self)
         self.despawn_timer = 0
-        if math.random(1, 5) <= 1 then
+        if herobrine_settings.random(1, 5, 1)then
             local props = self.object:get_properties()
             props.show_on_minimap = true
             self.object:set_properties(props)
@@ -48,7 +48,7 @@ local def = {
         self.despawn_timer = self.despawn_timer + dtime
 		local object = self.object
         if self.despawn_timer >= 30 then
-            if math.random(1, 10) <= 1 then
+            if herobrine_settings.random(1, 10, 1) then
                 herobrine.lightning_strike(object:get_pos())
             end
 			herobrine.despawnHerobrine(self)
@@ -58,7 +58,7 @@ local def = {
         local objs = minetest.get_objects_inside_radius(object:get_pos(), 3)
         for _, obj in pairs(objs) do
             if obj:is_player() then
-                if math.random(1, 10) <= 1 then
+                if herobrine_settings.random(1, 1000, 1) then
                     herobrine.lightning_strike(object:get_pos())
                 end
 				herobrine.despawnHerobrine(self)
@@ -80,14 +80,14 @@ minetest.register_globalstep(function(dtime)
 	if timer >= interval then
         timer = 0
 
-        if not math.random(1, 100) <= chance then
+        if not herobrine_settings.random(1, 100, chance) then
             return
         end
 
 		local players = minetest.get_connected_players()
-		local randplayer = players[math.random(1, #players)]
+		local randplayer = players[herobrine_settings.random(1, #players)]
 
-		local pos, success = herobrine.find_position_near(randplayer:get_pos(), math.random(25, 35))
+		local pos, success = herobrine.find_position_near(randplayer:get_pos(), herobrine_settings.random(25, 35))
 		if success then
 			herobrine.spawnHerobrine("herobrine:herobrine_footsteps", pos)
 		end
@@ -111,7 +111,7 @@ local function footsteps_player(pname, target, waypoint)
     if targetobj then
         local ppos = targetobj:get_pos()
         ppos.y = ppos.y + 1
-        local pos, success = herobrine.find_position_near(ppos, math.random(25, 35))
+        local pos, success = herobrine.find_position_near(ppos, herobrine_settings.random(25, 35))
         if success then
             if not herobrine.spawnHerobrine("herobrine:herobrine_footsteps", pos) then
                 return false, "A Herobrine has already been spawned."
@@ -136,7 +136,7 @@ end
 herobrine_commands.register_subcommand("footsteps_player", {
     privs = herobrine_commands.default_privs,
     hidden = true,
-    --description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
+    description = "Spawns Footsteps Herobrine. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name)
         return footsteps_player(name, name)
     end,
@@ -144,15 +144,16 @@ herobrine_commands.register_subcommand("footsteps_player", {
 
 herobrine_commands.register_subcommand("footsteps_player :waypoint", {
     privs = herobrine_commands.default_privs,
-    --description = "Stalks yourself. If waypoint is true, wherever Herobrine is spawned at will be marked.",
+    description = "Spawns Footsteps Herobrine. If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, waypoint)
         return footsteps_player(name, name, waypoint)
     end
 })
 
+--[[
 herobrine_commands.register_subcommand("footsteps_player :target :waypoint", {
     privs = herobrine_commands.default_privs,
-    --description = "Stalks a player. If waypoint is true, wherever Herobrine is spawned at will be marked.",
+    description = "Spawns . If waypoint is true, wherever Herobrine is spawned at will be marked.",
     func = function(name, target, waypoint)
         local player = minetest.get_player_by_name(target)
         if player then
@@ -162,3 +163,4 @@ herobrine_commands.register_subcommand("footsteps_player :target :waypoint", {
         end
     end,
 })
+]]

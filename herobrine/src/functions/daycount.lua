@@ -8,6 +8,8 @@ end
 function herobrine.set_day_count(num)
     herobrine_daycount = num
     storage:set_int("herobrine.daycount", num)
+
+    herobrine.registered_on_day_change:RunCallbacks(false, herobrine_daycount)
 end
 
 local old_day = minetest.get_day_count()
@@ -15,8 +17,6 @@ local function check_daycount()
     local new_day = minetest.get_day_count()
     if new_day ~= old_day then
         herobrine.set_day_count(herobrine_daycount + 1)
-
-        herobrine.registered_on_day_change:RunCallbacks(false, herobrine_daycount)
         old_day = new_day
     end
     minetest.after(15, check_daycount)

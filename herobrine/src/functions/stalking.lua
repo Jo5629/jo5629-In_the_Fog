@@ -23,7 +23,7 @@ end
 
 function herobrine.find_position_near(pos, radius)
     if not radius or radius > 70 then --> As long as the radius is <= 79 we will be okay. Lower the bar a little more too be safe.
-        radius = math.random(40, 60)
+        radius = herobrine_settings.random(40, 60)
     end
     local min = herobrine_settings.get_setting("despawn_radius") + 10
     local outside = minetest.get_node_light(pos, 0.5) == 15
@@ -72,18 +72,19 @@ minetest.register_globalstep(function(dtime)
     local temp_chance = chance
 
     timer = timer + dtime
-    if (minetest.get_timeofday() * 24) >= 20 and chance ~= 0 then --> Try some weighted chance.
+    local time = minetest.get_timeofday() * 24
+    if (time >= 20 or time <= 4) and chance ~= 0 then --> Try some weighted chance.
         temp_chance = chance + 25
     end
     if timer >= herobrine_settings.get_setting("stalking_timer") then
         timer = 0
 
-        if not math.random(1, 100) <= temp_chance then
+        if not herobrine_settings.random(1, 100, temp_chance) then
             return
         end
 
         local players = minetest.get_connected_players()
-        local player = players[math.random(1, #players)]
+        local player = players[herobrine_settings.random(1, #players)]
         local name = player:get_player_name()
         local pos = herobrine.find_position_near(player:get_pos())
         if minetest.pos_to_string(pos, 1) ~= minetest.pos_to_string(player:get_pos(), 1) then

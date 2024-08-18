@@ -21,7 +21,7 @@ function herobrine_ambience.get_ambience_list()
 end
 
 function herobrine_ambience.get_random_sound()
-    local sound_name = sounds[math.random(1, #sounds)]
+    local sound_name = sounds[herobrine_settings.random(1, #sounds)]
     return sound_name, true
 end
 
@@ -46,9 +46,9 @@ minetest.register_globalstep(function(dtime)
 
     timer = timer + dtime
     if timer >= interval then
-        if math.random(1, 100) <= chance then
+        if herobrine_settings.random(1, 100, chance) then
             local sound = herobrine_ambience.get_random_sound()
-            herobrine_ambience.play_ambience(sound, math.random(20, 25))
+            herobrine_ambience.play_ambience(sound, herobrine_settings.random(20, 25))
         end
         timer = 0
     end

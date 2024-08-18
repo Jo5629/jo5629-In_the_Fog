@@ -36,13 +36,13 @@ function herobrine.signs.generate_random_text(lang)
     if not words_table[lang] or not lang then
         lang = "en"
     end
-    return words_table[lang][math.random(1, #words_table[lang])], true
+    return words_table[lang][herobrine_settings.random(1, #words_table[lang])], true
 end
 
 --> Took and updated the function from herobrine.find_position_near()
 function herobrine.signs.find_position_near(pos, radius)
     if not radius or radius > 70 then --> As long as the radius is <= 79 we will be okay. Lower the bar a little more to be safe.
-        radius = math.random(40, 60)
+        radius = herobrine_settings.random(40, 60)
     end
     local pos1 = {x = pos.x - radius, y = pos.y - radius, z = pos.z - radius}
     local pos2 = {x = pos.x + radius, y = pos.y + radius, z = pos.z + radius}
@@ -135,14 +135,14 @@ minetest.register_globalstep(function(dtime)
     timer = timer + dtime
     if timer >= interval then
         timer = 0
-        if not enabled or not math.random(1, 100) <= chance then
+        if not enabled or not herobrine_settings.random(1, 100, chance) then
             return
         end
         local players = {}
         for _, playerobj in pairs(minetest.get_connected_players()) do
             table.insert(players, playerobj:get_player_name())
         end
-        local randpname = players[math.random(1, #players)]
+        local randpname = players[herobrine_settings.random(1, #players)]
         local randpobj = minetest.get_player_by_name(randpname)
         if randpobj then
             local pos, found = herobrine.signs.find_position_near(randpobj:get_pos())

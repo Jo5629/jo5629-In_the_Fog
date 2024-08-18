@@ -6,7 +6,8 @@ local cmd = chatcmdbuilder.register("herobrine", {
     description = "Command used for the In the Fog mod. Do /herobrine help to get started. Do /herobrine help true for the formspec version.",
     privs = {
         interact = true
-    }
+    },
+    params = "<help> [true]",
 })
 
 function herobrine_commands.register_subcommand(name, def, hidden)

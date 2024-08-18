@@ -44,6 +44,11 @@ herobrine_settings.register_setting("stalking_timer", {
   - `tbl` should be an array.
   - `index` is an numerical index from an array.
   - `val` is the value found using `tbl[index]`.
+- `herobrine_settings.random(min, max, num)` - Returns `num` or `boolean`.
+  - Pretty much equivalent to `math.random()`, but uses `PcgRandom` for a stronger randomness.
+  - `min, max` are integers.
+  - `num` can be any number.
+    - If `num` is not `nil`, it returns a boolean based on if the number generated in the `min, max` range is less than or equal to `num`.
 - `herobrine_settings.get_setting_val_from_day_count(name, days)` - Returns `val, success`
   - Calculated the output from a specific setting.
   - `name` is a string, but must be a valid setting name, whether hidden or not.

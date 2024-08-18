@@ -14,7 +14,7 @@ minetest.register_globalstep(function(dtime)
             local ppos = player:get_pos()
             local pos1, pos2 = vector.add(ppos, 10), vector.subtract(ppos, 10)
             for _, pos in pairs(minetest.find_nodes_in_area(pos1, pos2, "group:torch")) do
-                if math.random(1, 100) <= chance then
+                if herobrine_settings.random(1, 100, chance) then
                     minetest.dig_node(pos)
                     minetest.log("action", "[In the Fog] Removed the torch at: " .. minetest.pos_to_string(pos, 1))
                 end
