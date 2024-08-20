@@ -96,7 +96,10 @@ local def = {
 		if self.invisible then
 			self:do_attack()
 		else
-			self:stop_attack() --> Can't stop Herobrine from falling out of the sky.
+			self:stop_attack()
+			if self.standing_on == "air" then
+				self.object:set_velocity({x = 0, y = 0, z = 0})
+			end
 		end
 
 		if self.texture_timer >= 4 then
