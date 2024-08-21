@@ -1,3 +1,5 @@
+local CURRENT_SETTING_VERSION = "2"
+
 --> Save the settings on a world-to-world basis.
 local types = {["table"] = true, ["boolean"] = true, ["string"] = true, ["number"] = true}
 
@@ -80,6 +82,7 @@ function herobrine_settings.save_settings()
             file:set(k, tostring(v))
         end
     end
+    file:set("setting_version", CURRENT_SETTING_VERSION)
     local success = file:write()
     return success
 end
@@ -87,6 +90,15 @@ end
 function herobrine_settings.load_settings()
     local settings = Settings(herobrine_settings.conf_modpath .. "/herobrine_settings.conf")
     local settings_table = settings:to_table()
+
+    settings_table.setting_version = nil
+    if not settings:get("setting_version") then
+        return false
+    end
+    if not (tonumber(settings:get("setting_version")) >= tonumber(CURRENT_SETTING_VERSION)) then
+        return false
+    end
+
     for k, v in pairs(settings_table) do
         if k == nil then return end
         --> Write in the logs what settings were modified in the config file. Good for debugging.
