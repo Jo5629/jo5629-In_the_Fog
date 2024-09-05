@@ -1,6 +1,6 @@
 herobrine = {}
 
-local version = "v2.0.0-dev"
+local version = "v2.0.0"
 local srcpath = minetest.get_modpath(minetest.get_current_modname()) .. "/src"
 
 minetest.register_privilege("herobrine_admin", {
@@ -33,8 +33,6 @@ dofile(srcpath .. "/mobs/stalker.lua")
 dofile(srcpath .. "/mobs/herobrine.lua")
 dofile(srcpath .. "/mobs/footsteps.lua")
 
---[[ Tests.
-dofile(srcpath .. "/tests.lua")
-]]
+--dofile(srcpath .. "/tests.lua")
 
 minetest.log("action", "[In the Fog] Mod initialized. VERSION: " .. version)

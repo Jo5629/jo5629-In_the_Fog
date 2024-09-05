@@ -197,3 +197,18 @@ herobrine_settings.register_setting("torch_chance", {
         vals = {0, 5, 7, 10, 5},
     },
 }, true)
+
+herobrine_settings.register_setting("herobrine_angry_meter", {
+    type = "table",
+    description = "Herobrine's anger meter.",
+    value = {
+        days = {11, 12, 14, 16, 20},
+        vals = {0, 2, 5, 10, 15},
+    },
+}, true)
+
+herobrine_settings.register_setting("herobrine_hunting_interval", {
+    type = "number",
+    description = "Interval between Regular Herobrine spawning.",
+    value = 420,
+})

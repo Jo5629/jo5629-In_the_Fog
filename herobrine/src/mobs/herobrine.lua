@@ -109,6 +109,22 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 	end
 end)
 
+local timer = 0
+minetest.register_globalstep(function(dtime)
+	timer = timer + dtime
+	if timer >= herobrine_settings.get_setting("herobrine_hunting_interval") then
+		if herobrine_settings.random(1, 100, herobrine_settings.get_setting_val_from_day_count("herobrine_angry_meter", herobrine.get_day_count())) then
+			local players = minetest.get_connected_players()
+			local randplayer = players[herobrine_settings.random(1, #players)]
+			local pos, success = herobrine.find_position_near(randplayer:get_pos())
+			if success then
+				herobrine.spawnHerobrine("herobrine:herobrine", pos)
+			end
+		end
+		timer = 0
+	end
+end)
+
 --[[
 local function find_luaentity(entity)
 	local found, luaentity = false, nil

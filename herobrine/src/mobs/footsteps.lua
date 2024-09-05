@@ -78,8 +78,6 @@ minetest.register_globalstep(function(dtime)
 
 	timer = timer + dtime
 	if timer >= interval then
-        timer = 0
-
         if not herobrine_settings.random(1, 100, chance) then
             return
         end
@@ -91,6 +89,7 @@ minetest.register_globalstep(function(dtime)
 		if success then
 			herobrine.spawnHerobrine("herobrine:herobrine_footsteps", pos)
 		end
+        timer = 0
 	end
 end)
 

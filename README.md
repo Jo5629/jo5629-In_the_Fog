@@ -6,13 +6,12 @@
 
 ## WARNINGS
 
-- August 20th, 2024 - In the Fog is in feature freeze till further notice.
 - Bugs and crashes should be expected.
   - This is why using the latest commit from the repository in your world is not recommended. Please use the stable versions in the releases.
-- This mod is more focused towards singleplayer.
-  - Multiplayer is functional, but bugs not found in singleplayer testing might appear in multiplayer.
-- Parts of the mod are able to crash your game **AT RANDOM.**
-- Parts of the mod are also able to cause permanent damage to your world.
+- This mod is more singleplayer-focused and is mostly tested in singleplayer.
+  - Multiplayer is functional, but bugs not found in singleplayer testing may appear in multiplayer.
+- ~~Parts of the mod are purposefully able to crash your game **AT RANDOM.**~~ (This has been disabled till further notice.)
+- Parts of the mod are also able to cause damage to your world.
 
 ## HELP
 
@@ -27,4 +26,4 @@
 ### INSPIRATION
 
 - [Lunar Eclipse Studios - From the Fog](https://lunareclipse.studio/creations/from-the-fog)
-- [Calvin's From the Fog Series](https://www.youtube.com/@Calvin9000).
+- [Calvin's From the Fog Series](https://www.youtube.com/@Calvin9000)

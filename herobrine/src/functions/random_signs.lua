@@ -134,7 +134,6 @@ minetest.register_globalstep(function(dtime)
     
     timer = timer + dtime
     if timer >= interval then
-        timer = 0
         if not enabled or not herobrine_settings.random(1, 100, chance) then
             return
         end
@@ -150,5 +149,6 @@ minetest.register_globalstep(function(dtime)
                 herobrine.signs.place_sign(pos, herobrine.signs.generate_random_text())
             end
         end
+        timer = 0
     end
 end)

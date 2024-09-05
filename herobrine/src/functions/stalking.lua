@@ -77,8 +77,6 @@ minetest.register_globalstep(function(dtime)
         temp_chance = chance + 25
     end
     if timer >= herobrine_settings.get_setting("stalking_timer") then
-        timer = 0
-
         if not herobrine_settings.random(1, 100, temp_chance) then
             return
         end
@@ -90,6 +88,7 @@ minetest.register_globalstep(function(dtime)
         if minetest.pos_to_string(pos, 1) ~= minetest.pos_to_string(player:get_pos(), 1) then
             herobrine.stalk_player(name, pos)
         end
+        timer = 0
     end
 end)
 
