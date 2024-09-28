@@ -80,9 +80,14 @@ print(success) --> true
 - `herobrine_ambience.unregister_sound(name)` - Unregisters a sound. Returns `true` for success and `false` for failure.
 - `herobrine_ambience.get_ambience_list()` - Get all the registered sounds.
 - `herobrine_ambience.get_random_sound()` - Gets a random sound from the registered list.
-- `herobrine_ambience.play_sound(sound_name, duration)` - Plays sound `sound_name` for `duration` seconds. Returns `sound` and `job`, respectively.
+- `herobrine_ambience.play_sound(spec, duration, parameters)` - Returns `sound` and `job`, respectively.
+  - Plays a sound for `duration` seconds.
+  - `spec` - Can be a `SimpleSoundSpec` table or just a sound name.
+  - `parameters` - A sound parameter table.
   - `sound` - a handle returned by `minetest.sound_play`
   - `job` - Returns a job table from `minetest.after`
+- `herobrine_ambience.fade_sound(handle, step, gain)` - Returns a boolean.
+  - Inputs are the same as `minetest.sound_fade`.
 
 ## Herobrine Signs API
 
@@ -94,7 +99,7 @@ print(success) --> true
   - Uses the setting `signs_spawnable_on`.
   - Returns an **AIR NODE** that is **ONE BLOCK** above the original position.
 - `herobrine.signs.place_sign(pos, text)` - Places a sign at `pos` with `text` as a string on it.
-  - Supports `sign_lib`.
+  - Supports `signs_lib`.
 
 **EXAMPLE:**
 
@@ -166,14 +171,13 @@ The command can then be accessed using `/herobrine save_settings`.
 - `herobrine.register_on_day_change(function(daycount))`
   - Called when the **internal** daycount has changed.
   - `daycount` is a number.
-- `herobrine.register_on_spawn(function(name, pos))`
+- `herobrine.register_on_spawn(function(luaentity))`
   - Called when a Herobrine mob is spawned.
-  - `name` can be any of these types: `"herobrine:herobrine", "herobrine:herobrine_footsteps", "herobrine:herobrine_stalker"`.
-  - `pos` is a position where the mob was spawned at.
+  - `luaentity` is a table.
   - Must return `true` otherwise the mob will not spawn.
-- `herobrine.register_on_despawn(function(name, pos))`
+- `herobrine.register_on_despawn(function(luaentity))`
   - Called when a Herobrine mob has been despawned.
-  - `name` and `pos` are the same like in `herobrine.register_on_spawn`.
+  - `luaentity` is a table.
 
 ## In the Fog API Variables
 

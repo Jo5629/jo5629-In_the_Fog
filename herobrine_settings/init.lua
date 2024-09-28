@@ -41,7 +41,7 @@ end)
 
 local function settings_loop()
     herobrine_settings.save_settings()
-    minetest.after(60, settings_loop)
+    minetest.after(30, settings_loop)
 end
 
 minetest.after(0, settings_loop)

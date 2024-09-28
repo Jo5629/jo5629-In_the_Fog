@@ -35,6 +35,7 @@ local def = {
 	},
     immune_to = {"all"},
 	glow = 4,
+	fall_speed = -6000,
 
 	on_spawn = function(self)
 		self.disable_falling = true
@@ -47,18 +48,18 @@ local def = {
 		local pos = {}
 		if self.facing_pname == nil then
 			local players = minetest.get_connected_players()
-	    	pos = players[herobrine_settings.random(1, #players)]:get_pos()
+			local randplayer = players[herobrine_settings.random(1, #players)]
+	    	pos = randplayer:get_pos()
+			self.facing_pname = randplayer:get_player_name()
 		else
 			local player = minetest.get_player_by_name(self.facing_pname)
 			pos = player:get_pos()
 		end
 		self:yaw_to_pos(pos, 0)
-		self.herobrine_ambience = herobrine_ambience.play_ambience(herobrine_ambience.get_random_sound(), herobrine_settings.random(20, 25))
 	end,
 	do_punch = function (self, hitter)
 		minetest.log("action", "[In the Fog] Herobrine despawned because he was punched.")
 		if herobrine_settings.random(1, 100, herobrine_settings.get_setting("jumpscare_chance")) then herobrine.jumpscare_player(hitter, nil, true) end
-		minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
 		herobrine.despawnHerobrine(self)
 		return false
 	end,
@@ -70,7 +71,7 @@ local def = {
 	    self.despawn_timer = self.despawn_timer + dtime
 		if self.despawn_timer >= despawn_timer then
 			herobrine.despawnHerobrine(self)
-			minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
+
 			minetest.log("action", "[In the Fog] Herobrine despawned due to the despawn timer.")
 
 			if herobrine_settings.random(1, 100, herobrine_settings.get_setting("convert_stalker")) then
@@ -85,24 +86,22 @@ local def = {
 		for _, obj in pairs(objects) do
 			if obj:is_player() then
 				herobrine.despawnHerobrine(self)
-				minetest.sound_fade(self.herobrine_ambience, 0.1, 0)
 				if herobrine_settings.random(1, 100, herobrine_settings.get_setting("jumpscare_chance")) then herobrine.jumpscare_player(obj, nil, true) end
 				minetest.log("action", string.format("[In the Fog] Herobrine despawned due to a player being within %d blocks of it.", despawn_radius))
 				return false
 			end
 		end
 
+		local day_count = herobrine.get_day_count()
 		self.texture_timer = self.texture_timer + dtime
-		if self.invisible then
+		if self.invisible and day_count > 6 then
 			self:do_attack()
 		else
 			self:stop_attack()
-			if self.standing_on == "air" then
-				self.object:set_velocity({x = 0, y = 0, z = 0})
-			end
+			self.object:set_velocity({x = 0, y = 0, z = 0})
 		end
 
-		if self.texture_timer >= 4 then
+		if self.texture_timer >= 4 and day_count > 6 then
 			local props = object:get_properties()
 			if not self.invisible then
 				props.textures = {"herobrine_footsteps.png"}
@@ -126,6 +125,8 @@ local def = {
 				minetest.log("action", "[In the Fog] Herobrine despawned because he was too far from the player.")
 				herobrine.despawnHerobrine(self)
 				return false
+			else
+				herobrine_awards.unlock(player:get_player_name(), "herobrine_awards:stalker")
 			end
 
 			pos.y = pos.y + 1
@@ -138,7 +139,7 @@ local def = {
 			local diff = vector.length(vector.subtract(dir, pdir))
 			if diff <= 0.325 and vector.distance(pos, obj_pos) <= 40 and self.despawn_timer >= 6 and self.staring_timer >= 3 then
 				if herobrine_settings.random(1, 10000, 1) then
-					self.object:set_pos(player:get_pos())
+					object:set_pos(player:get_pos())
 				end
 				if herobrine_settings.random(1, 10000, 1) then
 					herobrine.despawnHerobrine(self)

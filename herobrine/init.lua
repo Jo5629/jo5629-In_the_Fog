@@ -1,7 +1,13 @@
+local version = "v3.0.0-dev"
+local srcpath = minetest.get_modpath(minetest.get_current_modname()) .. "/src"
+
 herobrine = {}
 
-local version = "v2.0.0"
-local srcpath = minetest.get_modpath(minetest.get_current_modname()) .. "/src"
+if not minetest.get_modpath("herobrine_awards") then
+    herobrine_awards = {
+        unlock = function() end
+    }
+end
 
 minetest.register_privilege("herobrine_admin", {
     description = "Allows the player to use advanced commands with the In the Fog mod.",

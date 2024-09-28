@@ -42,7 +42,7 @@ herobrine_commands.register_subcommand("ambience :word", {
         local duration = math.random(20, 25)
         if word == "*random" then
             local sound = herobrine_ambience.get_random_sound()
-            herobrine_ambience.play_ambience(sound, duration)
+            herobrine_ambience.play_sound(sound, duration)
             return true, string.format("Playing ambience sound: %s", sound)
         end
         local found = false
@@ -54,7 +54,7 @@ herobrine_commands.register_subcommand("ambience :word", {
             end
         end
         if found then
-            herobrine_ambience.play_ambience(word, duration)
+            herobrine_ambience.play_sound(word, duration)
             return true, string.format("Playing ambience sound: %s", word)
         else
             minetest.chat_send_player(name, table.concat(herobrine_ambience.get_ambience_list(), ","))

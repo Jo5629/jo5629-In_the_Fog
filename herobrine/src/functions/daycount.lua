@@ -19,10 +19,11 @@ local function check_daycount()
         herobrine.set_day_count(herobrine_daycount + 1)
         old_day = new_day
     end
-    minetest.after(15, check_daycount)
+    minetest.after(4, check_daycount)
 end
 
 minetest.after(0, function()
+    minetest.log("action", "[In the Fog] Internal daycount on server startup: " .. tostring(herobrine.get_day_count()))
     old_day = minetest.get_day_count()
     check_daycount()
 end)
