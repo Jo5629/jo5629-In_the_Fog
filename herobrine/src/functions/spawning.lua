@@ -43,10 +43,11 @@ herobrine.register_on_despawn(function(luaentity)
     if herobrine._spawned then
         herobrine._spawned = false
     end
-    minetest.chat_send_all("DESPAWNED.")
+
     local id = luaentity.sound_id
     herobrine_ambience.fade_sound(id, 0.1, 0)
     if jobs[id] then
         jobs[id]:cancel()
+        jobs[id] = nil
     end
 end)
