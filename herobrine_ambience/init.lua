@@ -32,12 +32,10 @@ function herobrine_ambience.play_sound(spec, duration, parameters)
     if type(spec) ~= "table" then
         spec = {name = spec, gain = 1.0}
     end
+    spec.gain = spec.gain or ambience_volume
 
     if type(parameters) ~= "table" then
         parameters = {}
-    end
-    if not parameters.gain then
-        parameters.gain = ambience_volume
     end
 
     local sound = minetest.sound_play(spec, parameters, false)

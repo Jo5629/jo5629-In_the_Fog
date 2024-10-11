@@ -9,7 +9,7 @@ local structure_modpath = minetest.get_modpath(minetest.get_current_modname()) .
 minetest.register_decoration({
     deco_type = "schematic",
     place_on = {"group:stone"},
-    sidelen = 9,
+    sidelen = 16,
     fill_ratio = 0.00003,
     y_max = -30000,
     y_min = -50,
@@ -22,7 +22,7 @@ minetest.register_decoration({
 minetest.register_decoration({
     deco_type = "schematic",
     place_on = {"group:sand", "group:water"},
-    sidelen = 9,
+    sidelen = 16,
     fill_ratio = 0.00003,
     y_max = 30000,
     y_min = 2,

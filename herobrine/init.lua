@@ -1,4 +1,4 @@
-local version = "v3.0.0"
+local version = "v3.0.1"
 local srcpath = minetest.get_modpath(minetest.get_current_modname()) .. "/src"
 
 herobrine = {}

@@ -26,7 +26,7 @@ herobrine.register_on_spawn(function(luaentity)
 
     local sound, job = herobrine_ambience.play_sound({
         name = herobrine_ambience.get_random_sound(),
-        max_hear_distance = 80,
+        max_hear_distance = herobrine_settings.random(65, 80),
         pos = luaentity.object:get_pos(),
         fade = 0.1,
     }, herobrine_settings.random(20, 25), {
