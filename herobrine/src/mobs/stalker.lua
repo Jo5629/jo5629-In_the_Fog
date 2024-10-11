@@ -94,7 +94,7 @@ local def = {
 
 		local day_count = herobrine.get_day_count()
 		self.texture_timer = self.texture_timer + dtime
-		if self.invisible and day_count > 6 then
+		if self.invisible and day_count > 6 and herobrine_settings.random(1, 100, 75) then
 			self:do_attack()
 		else
 			self:stop_attack()
